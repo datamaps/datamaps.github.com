@@ -54,26 +54,41 @@
           </p>
         </section>
         <section class="pull-right" style="padding-right: 55px;">
-          <div id="map_header" style="height: 100px; width: 200px;"></div>
+          <div id="map_header" style="height: 150px; width: 300px;"></div>
         </section>
       </article>
     </div>
+<hr />
 
     <div class="container">
-      <article class="row" style="display:none;">
-        <section class="span4">
-          <h4>Scalable visualizations with SVG</h4>
+      <article class="row">
+        <section class="span6">
+          <p class="lead">Global map</p>
+          <div id="map_world" style="width: 400px; height: 200px;"></div>
         </section>
-        <section class="span8">
-          <h4>Requires a single Javascript file</h4>
+        <section class="span6">
+          <p class="lead">USA specific</p>
+          <div id="map_usa" style="width: 350px; height: 275px; margin-top: -30px;"></div>
         </section>
       </article>
+      <article class="row">
+        <section class="span6">
+          <pre class="prettyprint linenums">$("#map_world").datamaps({scope: 'world'})</pre>
+        </section>
+        <section class="span6">
+          <pre class="prettyprint linenums">$("#map_usa").datamaps({scope: 'usa'})</pre>
+        </section>
+      </article>
+
+<hr />
 
       <article class="row">
         <section class="span4">
           <p class="lead">Add data to create choropleth maps</p>
           <pre class="prettyprint linenums">
-$('#map_click').datamaps({
+$('#map_election').datamaps({
+      scope: 'usa',
+      popupTemplate: _.template('<div>...</div>'),
       fills: {
         'REP': '#CC4731',
         'DEM': '#306596',
@@ -94,9 +109,29 @@ $('#map_click').datamaps({
         </section>
         <section class="span8">
           <p class="lead">&nbsp;</p>
-          <div id="map_click" style="width: 650px; height: 300px;"></div>
+          <div id="map_election" style="width: 800px; height: 375px;"></div>
         </section>
       </article>
+<hr />
+      <article class="row">
+        <section class="span4">
+          <p class="lead">Listen for events externally</p>
+          <pre class="prettyprint linenums">
+$('#map_events').datamaps({
+  //turn off hover popup
+});
+$('#map_events').on('map-click',
+  function(event, data) {
+    alert('Hello ' + data.geography.name);
+});
+</pre>
+        </section>
+        <section class="span8">
+          <p class="lead">Click on a country</p>
+          <div id="map_events" style="width: 800px; height: 375px;"></div>
+        </section>
+      </article>
+
 
 
     </div> <!-- /container -->
@@ -106,8 +141,27 @@ $('#map_click').datamaps({
         el: $("#map_header"),
         highlightFillColor: '#fa0fa0'
       }).render();
+
       new Map({
-        el: $("#map_click"),
+        el: $("#map_world"),
+        scope: 'world'
+      }).render();
+
+      new Map({
+        el: $("#map_usa"),
+        scope: 'usa'
+      }).render();
+
+      new Map({
+        el: $("#map_events")
+      }).render();
+      $('#map_events').on('map-click', function(event, data) { alert('Hello ' + data.geography.properties.name); });
+
+      new Map({
+        el: $("#map_election"),
+        scope: 'usa',
+         popupTemplate: _.template('<div class="hoverinfo"><strong><%= geography.properties.name %></strong> <% if (data.electoralVotes) { %> <br />Electoral Votes: <%= data.electoralVotes %> <% } %></div>'),
+
         highlightBorderColor: '#bada55',
         highlightBorderWidth: 3,
         fills: {
