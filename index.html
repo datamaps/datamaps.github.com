@@ -6,7 +6,7 @@
     <head>
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-        <title></title>
+        <title>DataMaps</title>
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width">
 
@@ -33,6 +33,11 @@
         .hoverinfo hr {
           border:1px dotted #CCC;
         }
+
+        .info .well,
+        .info .prettyprint {
+          background-color: rgba(200,200,200,0.55);
+        }
       </style>
         <link rel="stylesheet" href="/components/bootstrap/bootstrap/css/bootstrap.min.css">
         <link rel="stylesheet" href="/components/bootstrap/bootstrap/css/bootstrap-responsive.min.css">
@@ -50,45 +55,46 @@
         <section class="pull-left">
           <h1>DataMaps</h1>
           <p class="lead">
-            Maps built for data visualizations.
+            Interactive maps for data visualizations. Bundled into a single Javascript file.
           </p>
+          <a href="https://raw.github.com/markmarkoh/datamaps/master/dist/datamaps-us-only.js" class="btn btn-primary">Download datamaps-usa.js</a>
+          <a href="https://raw.github.com/markmarkoh/datamaps/master/dist/datamaps.js" class="btn btn-primary">Download datamaps-world.js</a>
         </section>
         <section class="pull-right" style="padding-right: 55px;">
           <div id="map_header" style="height: 150px; width: 300px;"></div>
         </section>
       </article>
     </div>
-<hr />
 
     <div class="container">
       <article class="row">
         <section class="span6">
-          <p class="lead">Global map</p>
+          <p class="lead">World map</p>
           <div id="map_world" style="width: 400px; height: 200px;"></div>
         </section>
         <section class="span6">
           <p class="lead">USA specific</p>
-          <div id="map_usa" style="width: 350px; height: 275px; margin-top: -30px;"></div>
+          <div id="map_usa" style="width: 350px; height: 275px; margin-top: -45px;"></div>
         </section>
       </article>
       <article class="row">
         <section class="span6">
-          <pre class="prettyprint linenums">$("#map_world").datamaps({scope: 'world'})</pre>
+          <pre class="prettyprint">$("#map_world").datamaps({scope: 'world'})</pre>
         </section>
         <section class="span6">
-          <pre class="prettyprint linenums">$("#map_usa").datamaps({scope: 'usa'})</pre>
+          <pre class="prettyprint">$("#map_usa").datamaps({scope: 'usa'})</pre>
         </section>
       </article>
 
 <hr />
 
       <article class="row">
-        <section class="span4">
+        <section class="span5">
           <p class="lead">Add data to create choropleth maps</p>
           <pre class="prettyprint linenums">
 $('#map_election').datamaps({
       scope: 'usa',
-      popupTemplate: _.template('<div>...</div>'),
+      popupTemplate: _.template('&lt;div&gt;...&lt;/div&gt;'),
       fills: {
         'REP': '#CC4731',
         'DEM': '#306596',
@@ -107,14 +113,14 @@ $('#map_election').datamaps({
         } /* ... snipped */
 })</pre>
         </section>
-        <section class="span8">
+        <section class="span7">
           <p class="lead">&nbsp;</p>
-          <div id="map_election" style="width: 800px; height: 375px;"></div>
+          <div id="map_election" style="width: 700px; height: 375px;"></div>
         </section>
       </article>
 <hr />
       <article class="row">
-        <section class="span4">
+        <section class="span5">
           <p class="lead">Listen for events externally</p>
           <pre class="prettyprint linenums">
 $('#map_events').datamaps({
@@ -126,20 +132,87 @@ $('#map_events').on('map-click',
 });
 </pre>
         </section>
-        <section class="span8">
-          <p class="lead">Click on a country</p>
-          <div id="map_events" style="width: 800px; height: 375px;"></div>
+        <section class="span7">
+          <p class="lead pull-right">Click on a country</p>
+          <div id="map_events" style="width: 700px; height: 355px;"></div>
         </section>
       </article>
 
+    <hr style="margin-top: 60px;" />
+    <article style="position:relative;" class="row info">
+        <div id="bg" style="z-index:-1;position:absolute;top:0;left:0;width:100%;height:100%;"></div>
+        <section class="span6">
+          <h3>Project Information</h3>
+          <div class="well">
+            <ul>
+              <li>Uses D3.js</li>
+              <li>and Backbone, Underscore &amp; Zepto</li>
+              <li>Delivered as a jQuery plugin</li>
+              <li>Optionally, if you use Backbone, also delivered as a standalone Backbone view</li>
+              <li>Available bundled with dependencies and without(for existing Backbone apps)</li>
+            </ul>
+          </div>
+          <h3>Available Builds</h3>
+          <div class="well">
+            <ul>
+              <li>USA only w/ dependencies</li>
+              <li>USA only w/o dependencies (Backbone, _ and $ would need to be provided)</li>
+              <li>Countries only w/ dependencies</li>
+              <li>Countries only w/o dependencies</li>
+              <li>USA &amp; Countries w/ dependencies</li>
+              <li>USA &amp; Countries w/o dependencies</li>
+          </div>
+        </section>
+        <section class="span6">
+          <h3>Default Options</h3>
+          <pre class="prettyprint linenums">{
+      projection: 'equirectangular', // 'albersUsa'
+      scope: 'world', // 'usa'
+      highlightOnHover: true,
+      showPopupOnHover: true,
+      popupTemplate: _.template('&lt;div class="hoverinfo"&gt;&lt;%= geography.properties.name %&gt;&lt;/div&gt;'),
+
+      /* highlight defaults */
+      highlightBorderColor: '#FA0FA0',
+      highlightBorderWidth: 2,
+
+      borderColor: '#FFFFFF',
+      borderWidth: 1,
+
+      /* fill settings */
+      data: {},
+      fills: {
+        defaultFill: '#BADA55'
+      }
+}</pre>
+        </section>
+    </article>
 
 
     </div> <!-- /container -->
+    <footer class="footer">
+      <div class="container">
+        <p>&copy; 2012 Mark DiMarco</p>
+        <p>
+        Released under the <a href="https://github.com/markmarkoh/datamaps/blob/master/LICENSE">MIT License</a>
+      </p>
+      </div>
+    </footer>
     <script src="/scripts/datamaps.js"></script>
     <script>
       new Map({
+        el: $("#bg"),
+        borderColor: 'rgba(200,200,200,0.4)',
+        fills: {defaultFill: 'rgba(0,0,0,0)'}
+      }).render();
+
+      new Map({
         el: $("#map_header"),
-        highlightFillColor: '#fa0fa0'
+        highlightFillColor: '#fa0fa0',
+        borderColor: 'rgba(0,0,0,.1)',
+        fills: {
+          defaultFill: 'rgba(0,0,0,0)'
+        }
       }).render();
 
       new Map({
