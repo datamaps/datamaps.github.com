@@ -79,10 +79,10 @@
       </article>
       <article class="row">
         <section class="span6">
-          <pre class="prettyprint">$("#map_world").datamaps({scope: 'world'})</pre>
+          <pre class="prettyprint">$("#map_world").datamap({scope: 'world'})</pre>
         </section>
         <section class="span6">
-          <pre class="prettyprint">$("#map_usa").datamaps({scope: 'usa'})</pre>
+          <pre class="prettyprint">$("#map_usa").datamap({scope: 'usa'})</pre>
         </section>
       </article>
 
@@ -92,7 +92,7 @@
         <section class="span5">
           <p class="lead">Add data to create choropleth maps</p>
           <pre class="prettyprint linenums">
-$('#map_election').datamaps({
+$('#map_election').datamap({
       scope: 'usa',
       popupTemplate: _.template('&lt;div&gt;...&lt;/div&gt;'),
       fills: {
@@ -123,13 +123,28 @@ $('#map_election').datamaps({
         <section class="span5">
           <p class="lead">Listen for events externally</p>
           <pre class="prettyprint linenums">
-$('#map_events').datamaps({
+$('#map_events').datamap({
   //turn off hover popup
 });
 $('#map_events').on('map-click',
+  /*event handlers are passed an event object
+    and a data object.
+    The data parameter contains 2 keys.
+    &rarr; geography
+    &rarr; data
+      if the geographical
+      feature's ID was specified in the 'data'
+      object. Like the choropleth example above.
+  */
   function(event, data) {
     alert('Hello ' + data.geography.name);
 });
+/* Events list:
+  &rarr; map-click
+  &rarr; map-touch
+  &rarr; map-mouseover
+  &rarr; map-mouseout
+*/
 </pre>
         </section>
         <section class="span7">
@@ -198,8 +213,9 @@ $('#map_events').on('map-click',
       </p>
       </div>
     </footer>
-    <script src="/scripts/datamaps.js"></script>
+    <script src="/scripts/datamaps-all.js"></script>
     <script>
+      /* Backbone View style */
       new Map({
         el: $("#bg"),
         borderColor: 'rgba(200,200,200,0.4)',
@@ -230,8 +246,9 @@ $('#map_events').on('map-click',
       }).render();
       $('#map_events').on('map-click', function(event, data) { alert('Hello ' + data.geography.properties.name); });
 
-      new Map({
-        el: $("#map_election"),
+
+      /* jQuery/Zepto plugin version */
+      $("#map_election").datamap({
         scope: 'usa',
          popupTemplate: _.template('<div class="hoverinfo"><strong><%= geography.properties.name %></strong> <% if (data.electoralVotes) { %> <br />Electoral Votes: <%= data.electoralVotes %> <% } %></div>'),
 
@@ -448,12 +465,12 @@ $('#map_events').on('map-click',
             "electoralVotes": 32
         }
 }
-      }).render();
+      });
     </script>
     <a href="https://github.com/markmarkoh/datamaps"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_green_007200.png" alt="Fork me on GitHub"></a>
     <script src="/scripts/prettify.js"></script>
     <script>window.prettyPrint && prettyPrint()</script>
-        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+       <!-- <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script> -->
 
 
 <script type="text/javascript">
