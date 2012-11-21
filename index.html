@@ -148,7 +148,8 @@ $('#map_events').on('map-click',
 </pre>
         </section>
         <section class="span7">
-          <p class="lead pull-right">Click on a country</p>
+          <p class="lead pull-left" id="map_events_heading"></p>
+          <p class="lead pull-right"> Click on a country</p>
           <div id="map_events" style="width: 700px; height: 355px;"></div>
         </section>
       </article>
@@ -157,6 +158,13 @@ $('#map_events').on('map-click',
     <article style="position:relative;" class="row info">
         <div id="bg" style="z-index:-1;position:absolute;top:0;left:0;width:100%;height:100%;"></div>
         <section class="span6">
+          <h3>Examples</h3>
+          <div class="well">
+            <ul>
+              <li><a href="http://bl.ocks.org/4127667">Datamap of ongoing military conflicts</a></li>
+              <li><a href="http://bl.ocks.org/4127517">US Election map</a></li>
+            </ul>
+          </div>
           <h3>Project Information</h3>
           <div class="well">
             <ul>
@@ -244,7 +252,13 @@ $('#map_events').on('map-click',
       new Map({
         el: $("#map_events")
       }).render();
-      $('#map_events').on('map-click', function(event, data) { alert('Hello ' + data.geography.properties.name); });
+
+      $('#map_events').on('map-click', function(event, data) {
+       alert('Hello ' + data.geography.properties.name);
+      });
+      $('#map_events').on('map-mouseover', function(event, data) {
+        $('#map_events_heading').text('Mousing over ' + data.geography.properties.name);
+      });
 
 
       /* jQuery/Zepto plugin version */
