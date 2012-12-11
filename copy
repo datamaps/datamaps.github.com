@@ -1,0 +1,1 @@
+cp -rp ../datamaps/dist/datamaps-all.js scripts/datamaps-all.js

@@ -12,28 +12,6 @@
 
         <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
       <style>
-        path {
-          /*fill: #BADA55;*/
-          stroke: #FFFFFF;
-          stroke-width: 1px;
-        }
-
-        .hoverover { 
-          font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-        }
-        .hoverinfo {
-          padding: 4px;
-          border-radius: 1px;
-          background-color: #FFF;
-          box-shadow: 1px 1px 5px #CCC;
-          font-size: 12px;
-          border: 1px solid #CCC;
-        }
-
-        .hoverinfo hr {
-          border:1px dotted #CCC;
-        }
-
         .info .well,
         .info .prettyprint {
           background-color: rgba(200,200,200,0.55);
@@ -226,14 +204,22 @@ $('#map_events').on('map-click',
       /* Backbone View style */
       new Map({
         el: $("#bg"),
-        borderColor: 'rgba(200,200,200,0.4)',
+        geography: {
+          borderColor: 'rgba(200,200,200,0.4)'
+        },
         fills: {defaultFill: 'rgba(0,0,0,0)'}
       }).render();
 
       new Map({
         el: $("#map_header"),
-        highlightFillColor: '#fa0fa0',
-        borderColor: 'rgba(0,0,0,.1)',
+
+        geography: {
+          highlightFillColor: '#222222',
+          highlightBorderColor: '#000000',
+          popupOnHover: false,
+          borderColor: 'rgba(0,0,0,0.4)'
+        },
+
         fills: {
           defaultFill: 'rgba(0,0,0,0)'
         }
@@ -266,8 +252,11 @@ $('#map_events').on('map-click',
         scope: 'usa',
          popupTemplate: _.template('<div class="hoverinfo"><strong><%= geography.properties.name %></strong> <% if (data.electoralVotes) { %> <br />Electoral Votes: <%= data.electoralVotes %> <% } %></div>'),
 
-        highlightBorderColor: '#bada55',
-        highlightBorderWidth: 3,
+        geography: {
+          highlightBorderColor: '#bada55',
+          highlightBorderWidth: 3
+        },
+
         fills: {
         'REP': '#CC4731',
         'DEM': '#306596',
