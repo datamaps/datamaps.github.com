@@ -45,30 +45,49 @@
     </div>
 
     <div class="container">
-      <article class="row">
-        <section class="span6">
-          <p class="lead">World map</p>
-          <div id="map_world" style="width: 400px; height: 200px;"></div>
+<article class="row">
+        <section class="span5">
+          <p class="lead"><code>plot</code> for plots/bubbles</p>
+          <pre class="prettyprint linenums">
+$("#map_bombs").datamap({
+    scope: 'world',
+    /*plot data*/
+    plots: [{
+          name: 'Gerboise Bleue',
+          radius: 20.4,
+          yeild: 70,
+          country: 'France',
+          significance: 'First fission weapon test by France',
+          date: '1960-02-13',
+          fillKey: 'FRA',
+          latitude: -0.325,
+          longitude: 26.1840
+    }, {
+    name: 'Canopus',
+    radius: 10.23
+    /*...snipped, see source link under map */
+        ],
+    /*plot config*/
+    plot: {
+        popupTemplate: _.template([
+            '&lt;div class="hoverinfo">&lt;stro...'
+    },
+    geography: {
+        popupOnHover: false,
+        highlightOnHover: false
+    },
+</pre>
         </section>
-        <section class="span6">
-          <p class="lead">USA specific</p>
-          <div id="map_usa" style="width: 350px; height: 275px; margin-top: -45px;"></div>
+        <section class="span7">
+          <div id="map_bombs" style="width: 700px; height: 375px;"></div>
         </section>
-      </article>
-      <article class="row">
-        <section class="span6">
-          <pre class="prettyprint">$("#map_world").datamap({scope: 'world'})</pre>
-        </section>
-        <section class="span6">
-          <pre class="prettyprint">$("#map_usa").datamap({scope: 'usa'})</pre>
-        </section>
+        <a class="pull-right" href="http://bl.ocks.org/4255924">Source for this example</a>
       </article>
 
 <hr />
-
       <article class="row">
         <section class="span5">
-          <p class="lead">Add data to create choropleth maps</p>
+          <p class="lead"><code>data</code> for Choropleths</p>
           <pre class="prettyprint linenums">
 $('#map_election').datamap({
       scope: 'usa',
@@ -95,43 +114,28 @@ $('#map_election').datamap({
           <p class="lead">&nbsp;</p>
           <div id="map_election" style="width: 700px; height: 375px;"></div>
         </section>
+        <a class="pull-right" href="http://bl.ocks.org/4127517">Source for this example</a>
+
       </article>
 <hr />
       <article class="row">
-        <section class="span5">
-          <p class="lead">Listen for events externally</p>
-          <pre class="prettyprint linenums">
-$('#map_events').datamap({
-  //turn off hover popup
-});
-$('#map_events').on('map-click',
-  /*event handlers are passed an event object
-    and a data object.
-    The data parameter contains 2 keys.
-    &rarr; geography
-    &rarr; data
-      if the geographical
-      feature's ID was specified in the 'data'
-      object. Like the choropleth example above.
-  */
-  function(event, data) {
-    alert('Hello ' + data.geography.name);
-});
-/* Events list:
-  &rarr; map-click
-  &rarr; map-touch
-  &rarr; map-mouseover
-  &rarr; map-mouseout
-*/
-</pre>
+        <section class="span6">
+          <p class="lead">World map</p>
+          <div id="map_world" style="width: 400px; height: 200px;"></div>
         </section>
-        <section class="span7">
-          <p class="lead pull-left" id="map_events_heading"></p>
-          <p class="lead pull-right"> Click on a country</p>
-          <div id="map_events" style="width: 700px; height: 355px;"></div>
+        <section class="span6">
+          <p class="lead">USA specific</p>
+          <div id="map_usa" style="width: 350px; height: 275px; margin-top: -45px;"></div>
         </section>
       </article>
-
+      <article class="row">
+        <section class="span6">
+          <pre class="prettyprint">$("#map_world").datamap({scope: 'world'})</pre>
+        </section>
+        <section class="span6">
+          <pre class="prettyprint">$("#map_usa").datamap({scope: 'usa'})</pre>
+        </section>
+      </article> 
     <hr style="margin-top: 60px;" />
     <article style="position:relative;" class="row info">
         <div id="bg" style="z-index:-1;position:absolute;top:0;left:0;width:100%;height:100%;"></div>
@@ -139,8 +143,9 @@ $('#map_events').on('map-click',
           <h3>Examples</h3>
           <div class="well">
             <ul>
-              <li><a href="http://bl.ocks.org/4127667">Datamap of ongoing military conflicts</a></li>
-              <li><a href="http://bl.ocks.org/4127517">US Election map</a></li>
+              <li><a href="http://bl.ocks.org/4255924">Plot: Milestone Nuclear Tests map</a></li>
+              <li><a href="http://bl.ocks.org/4127667">Choropleth: Datamap of ongoing military conflicts</a></li>
+              <li><a href="http://bl.ocks.org/4127517">Choropleth: US Election map</a></li>
             </ul>
           </div>
           <h3>Project Information</h3>
@@ -250,7 +255,7 @@ $('#map_events').on('map-click',
       /* jQuery/Zepto plugin version */
       $("#map_election").datamap({
         scope: 'usa',
-         popupTemplate: _.template('<div class="hoverinfo"><strong><%= geography.properties.name %></strong> <% if (data.electoralVotes) { %> <br />Electoral Votes: <%= data.electoralVotes %> <% } %></div>'),
+         popupTemplate: _.template('&lt;;div class="hoverinfo"><strong><%= geography.properties.name %></strong> <% if (data.electoralVotes) { %> <br />Electoral Votes: <%= data.electoralVotes %> <% } %></div>'),
 
         geography: {
           highlightBorderColor: '#bada55',
@@ -469,7 +474,10 @@ $('#map_events').on('map-click',
         }
 }
       });
+
+    
     </script>
+    <script src="scripts/bombs.js"></script>
     <a href="https://github.com/markmarkoh/datamaps"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_green_007200.png" alt="Fork me on GitHub"></a>
     <script src="/scripts/prettify.js"></script>
     <script>window.prettyPrint && prettyPrint()</script>
