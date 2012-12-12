@@ -255,10 +255,9 @@ $('#map_election').datamap({
       /* jQuery/Zepto plugin version */
       $("#map_election").datamap({
         scope: 'usa',
-         popupTemplate: _.template('&lt;;div class="hoverinfo"><strong><%= geography.properties.name %></strong> <% if (data.electoralVotes) { %> <br />Electoral Votes: <%= data.electoralVotes %> <% } %></div>'),
-
         geography: {
           highlightBorderColor: '#bada55',
+          popupTemplate: _.template('<div class="hoverinfo"><strong><%= geography.properties.name %></strong> <% if (data.electoralVotes) { %> <br />Electoral Votes: <%= data.electoralVotes %> <% } %></div>'),
           highlightBorderWidth: 3
         },
 
