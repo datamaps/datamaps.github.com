@@ -47,12 +47,12 @@
     <div class="container">
 <article class="row">
         <section class="span5">
-          <p class="lead"><code>plot</code> for plots/bubbles</p>
+          <p class="lead"><code>bubbles</code> for data bubbles</p>
           <pre class="prettyprint linenums">
 $("#map_bombs").datamap({
     scope: 'world',
-    /*plot data*/
-    plots: [{
+    /*bubble data*/
+    bubbles: [{
           name: 'Gerboise Bleue',
           radius: 20.4,
           yeild: 70,
@@ -67,12 +67,12 @@ $("#map_bombs").datamap({
     radius: 10.23
     /*...snipped, see source link under map */
         ],
-    /*plot config*/
-    plot: {
+    /*bubble config*/
+    bubble_config: {
         popupTemplate: _.template([
             '&lt;div class="hoverinfo">&lt;stro...'
     },
-    geography: {
+    geography_config: {
         popupOnHover: false,
         highlightOnHover: false
     },
@@ -143,7 +143,7 @@ $('#map_election').datamap({
           <h3>Examples</h3>
           <div class="well">
             <ul>
-              <li><a href="http://bl.ocks.org/4255924">Plot: Milestone Nuclear Tests map</a></li>
+              <li><a href="http://bl.ocks.org/4255924">Bubble: Milestone Nuclear Tests map</a></li>
               <li><a href="http://bl.ocks.org/4127667">Choropleth: Datamap of ongoing military conflicts</a></li>
               <li><a href="http://bl.ocks.org/4127517">Choropleth: US Election map</a></li>
             </ul>
@@ -174,19 +174,38 @@ $('#map_election').datamap({
           <pre class="prettyprint linenums">{
       projection: 'equirectangular', // 'albersUsa'
       scope: 'world', // 'usa'
-      highlightOnHover: true,
-      showPopupOnHover: true,
-      popupTemplate: _.template('&lt;div class="hoverinfo"&gt;&lt;%= geography.properties.name %&gt;&lt;/div&gt;'),
 
-      /* highlight defaults */
-      highlightBorderColor: '#FA0FA0',
-      highlightBorderWidth: 2,
+      /* geographical fills */
+      geography_config: {
+        borderWidth: 1,
+        borderColor: '#FFFFFF',
 
-      borderColor: '#FFFFFF',
-      borderWidth: 1,
+        popupTemplate: _.template('&lt;div class="hoverinfo"&gt;&lt;%= geography.properties.name %&gt;&lt;/div&gt;'),
+        popupOnHover: true,
+
+        highlightOnHover: true,
+        highlightBorderColor: '#FA0FA0',
+        highlightBorderWidth: 2
+      },
+
+      /* bubbles points */
+      bubble_config: {
+        borderWidth: 2,
+        borderColor: '#FFFFFF',
+        popupOnHover: true,
+        popupTemplate: _.template(''),
+        fillOpacity: 0.75,
+        animate: true,
+        highlightOnHover: true,
+        highlightBorderColor: '#667FAF',
+        highlightFillColor: '#667FAF',
+        highlightBorderWidth: 2,
+        highlightFillOpacity: 0.85
+      },
 
       /* fill settings */
       data: {},
+      bubbles: [],
       fills: {
         defaultFill: '#BADA55'
       }
@@ -209,7 +228,7 @@ $('#map_election').datamap({
       /* Backbone View style */
       new Map({
         el: $("#bg"),
-        geography: {
+        geography_config: {
           borderColor: 'rgba(200,200,200,0.4)'
         },
         fills: {defaultFill: 'rgba(0,0,0,0)'}
@@ -218,7 +237,7 @@ $('#map_election').datamap({
       new Map({
         el: $("#map_header"),
 
-        geography: {
+        geography_config: {
           highlightFillColor: '#222222',
           highlightBorderColor: '#000000',
           popupOnHover: false,
@@ -251,11 +270,10 @@ $('#map_election').datamap({
         $('#map_events_heading').text('Mousing over ' + data.geography.properties.name);
       });
 
-
       /* jQuery/Zepto plugin version */
       $("#map_election").datamap({
         scope: 'usa',
-        geography: {
+        geography_config: {
           highlightBorderColor: '#bada55',
           popupTemplate: _.template('<div class="hoverinfo"><strong><%= geography.properties.name %></strong> <% if (data.electoralVotes) { %> <br />Electoral Votes: <%= data.electoralVotes %> <% } %></div>'),
           highlightBorderWidth: 3

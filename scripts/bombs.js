@@ -230,8 +230,8 @@ var bombs = new Backbone.Collection([
 
    $("#map_bombs").datamap({
         scope: 'world',
-        plots: bombs.toJSON(),
-        plot: {
+        bubbles: bombs.toJSON(),
+        bubble_config: {
             popupTemplate: _.template([
                 '<div class="hoverinfo"><strong><%= data.name %></strong>',
                 '<br/>Payload: <%= data.yeild %> kilotons',
@@ -239,7 +239,7 @@ var bombs = new Backbone.Collection([
                 '<br/>Date: <%= data.date %>',
                 '</div>'].join(''))
         },
-        geography: {
+        geography_config: {
             popupOnHover: false,
             highlightOnHover: false
         },
