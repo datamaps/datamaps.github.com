@@ -1,4 +1,4 @@
-var bombs = new Backbone.Collection([
+var bombs = [
   {
     name: 'Gerboise Bleue',
     radius: 0,
@@ -212,10 +212,14 @@ var bombs = new Backbone.Collection([
     latitude: 73.482,
     longitude: 54.5854
   }
-]);
+];
+
+
 
     //prep the data
-    var yields = bombs.pluck('yeild');
+    var yields = bombs.map(function(bomb) {
+        return bomb['yeild'];
+    });
 
     var min = d3.min( yields );
     var max = d3.max( yields );
@@ -224,22 +228,25 @@ var bombs = new Backbone.Collection([
         .domain([min, max])
         .range([10, 45]);
 
-    bombs.each(function(val, idx) {
-        bombs.at(idx).set('radius', scale(val.get('yeild')));
+    bombs.each(function(bomb) {
+        bomb['radius'] = scale( bomb['yeild']);
     });
 
-   $("#map_bombs").datamap({
+    console.log(bombs);
+
+   new Datamap({
+        element: document.getElementById('map_bombs'),
         scope: 'world',
-        plots: bombs.toJSON(),
-        plot: {
-            popupTemplate: _.template([
-                '<div class="hoverinfo"><strong><%= data.name %></strong>',
-                '<br/>Payload: <%= data.yeild %> kilotons',
-                '<br/>Country: <%= data.country %>',
-                '<br/>Date: <%= data.date %>',
-                '</div>'].join(''))
+        bubbles: bombs,
+        bubbleConfig: {
+            popupTemplate:function (geography, data) { 
+                return ['<div class="hoverinfo"><strong>' +  data.name + '</strong>',
+                '<br/>Payload: ' +  data.yeild + ' kilotons',
+                '<br/>Country: ' +  data.country + '',
+                '<br/>Date: ' +  data.date + '',
+                '</div>'].join('');
         },
-        geography: {
+        geographyConfig: {
             popupOnHover: false,
             highlightOnHover: false
         },

@@ -1,1 +1,2 @@
-cp -rp ../datamaps/dist/datamaps-all.js scripts/datamaps-all.js
+cp -rp ../datamaps/public/rel/datamaps.all.min.js scripts/datamaps.all.min.js
+cp -rp ../datamaps/public/rel/* scripts/
