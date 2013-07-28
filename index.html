@@ -63,7 +63,7 @@
       <article class="row">
         <div class="span12">
           <h2>Choropleths</h2>
-          <p class="lead">Color code states and countries based on data</p>
+          <p class="lead">Color code states and countries based on data, with an optional map legend</p>
         </div>
         </article>
       <article class="row">
@@ -73,7 +73,6 @@
           </article>
         </section>
         <section class="span7">
-          <p class="lead">&nbsp;</p>
           <div id="map_election" style="position: relative; width: 700px; height: 375px;"></div>
         </section>
       </article>
@@ -212,7 +211,7 @@
     </footer>
 
     <script>
-      new Datamap({
+      var election = new Datamap({
         scope: 'usa',
         element: document.getElementById('map_election'),
         geographyConfig: {
@@ -224,25 +223,25 @@
         },
 
         fills: {
-        'REP': '#CC4731',
-        'DEM': '#306596',
-        'HEAVY_DEM': '#667FAF',
-        'LIGHT_DEM': '#A9C0DE',
-        'HEAVY_REP': '#CA5E5B',
-        'LIGHT_REP': '#EAA9A8',
+        'Republican': '#CC4731',
+        'Democrat': '#306596',
+        'Heavy Democrat': '#667FAF',
+        'Light Democrat': '#A9C0DE',
+        'Heavy Republican': '#CA5E5B',
+        'Light Republican': '#EAA9A8',
         defaultFill: '#EDDC4E'
       },
       data:{
         "AZ": {
-            "fillKey": "REP",
+            "fillKey": "Republican",
             "electoralVotes": 5
         },
         "CO": {
-            "fillKey": "LIGHT_DEM",
+            "fillKey": "Light Democrat",
             "electoralVotes": 5
         },
         "DE": {
-            "fillKey": "DEM",
+            "fillKey": "Democrat",
             "electoralVotes": 32
         },
         "FL": {
@@ -250,103 +249,103 @@
             "electoralVotes": 29
         },
         "GA": {
-            "fillKey": "REP",
+            "fillKey": "Republican",
             "electoralVotes": 32
         },
         "HI": {
-            "fillKey": "DEM",
+            "fillKey": "Democrat",
             "electoralVotes": 32
         },
         "ID": {
-            "fillKey": "REP",
+            "fillKey": "Republican",
             "electoralVotes": 32
         },
         "IL": {
-            "fillKey": "DEM",
+            "fillKey": "Democrat",
             "electoralVotes": 32
         },
         "IN": {
-            "fillKey": "REP",
+            "fillKey": "Republican",
             "electoralVotes": 11
         },
         "IA": {
-            "fillKey": "LIGHT_DEM",
+            "fillKey": "Light Democrat",
             "electoralVotes": 11
         },
         "KS": {
-            "fillKey": "REP",
+            "fillKey": "Republican",
             "electoralVotes": 32
         },
         "KY": {
-            "fillKey": "REP",
+            "fillKey": "Republican",
             "electoralVotes": 32
         },
         "LA": {
-            "fillKey": "REP",
+            "fillKey": "Republican",
             "electoralVotes": 32
         },
         "MD": {
-            "fillKey": "DEM",
+            "fillKey": "Democrat",
             "electoralVotes": 32
         },
         "ME": {
-            "fillKey": "DEM",
+            "fillKey": "Democrat",
             "electoralVotes": 32
         },
         "MA": {
-            "fillKey": "DEM",
+            "fillKey": "Democrat",
             "electoralVotes": 32
         },
         "MN": {
-            "fillKey": "DEM",
+            "fillKey": "Democrat",
             "electoralVotes": 32
         },
         "MI": {
-            "fillKey": "DEM",
+            "fillKey": "Democrat",
             "electoralVotes": 32
         },
         "MS": {
-            "fillKey": "REP",
+            "fillKey": "Republican",
             "electoralVotes": 32
         },
         "MO": {
-            "fillKey": "REP",
+            "fillKey": "Republican",
             "electoralVotes": 13
         },
         "MT": {
-            "fillKey": "REP",
+            "fillKey": "Republican",
             "electoralVotes": 32
         },
         "NC": {
-            "fillKey": "LIGHT_REP",
+            "fillKey": "Light Republican",
             "electoralVotes": 32
         },
         "NE": {
-            "fillKey": "REP",
+            "fillKey": "Republican",
             "electoralVotes": 32
         },
         "NV": {
-            "fillKey": "HEAVY_DEM",
+            "fillKey": "Heavy Democrat",
             "electoralVotes": 32
         },
         "NH": {
-            "fillKey": "LIGHT_DEM",
+            "fillKey": "Light Democrat",
             "electoralVotes": 32
         },
         "NJ": {
-            "fillKey": "DEM",
+            "fillKey": "Democrat",
             "electoralVotes": 32
         },
         "NY": {
-            "fillKey": "DEM",
+            "fillKey": "Democrat",
             "electoralVotes": 32
         },
         "ND": {
-            "fillKey": "REP",
+            "fillKey": "Republican",
             "electoralVotes": 32
         },
         "NM": {
-            "fillKey": "DEM",
+            "fillKey": "Democrat",
             "electoralVotes": 32
         },
         "OH": {
@@ -354,87 +353,89 @@
             "electoralVotes": 32
         },
         "OK": {
-            "fillKey": "REP",
+            "fillKey": "Republican",
             "electoralVotes": 32
         },
         "OR": {
-            "fillKey": "DEM",
+            "fillKey": "Democrat",
             "electoralVotes": 32
         },
         "PA": {
-            "fillKey": "DEM",
+            "fillKey": "Democrat",
             "electoralVotes": 32
         },
         "RI": {
-            "fillKey": "DEM",
+            "fillKey": "Democrat",
             "electoralVotes": 32
         },
         "SC": {
-            "fillKey": "REP",
+            "fillKey": "Republican",
             "electoralVotes": 32
         },
         "SD": {
-            "fillKey": "REP",
+            "fillKey": "Republican",
             "electoralVotes": 32
         },
         "TN": {
-            "fillKey": "REP",
+            "fillKey": "Republican",
             "electoralVotes": 32
         },
         "TX": {
-            "fillKey": "REP",
+            "fillKey": "Republican",
             "electoralVotes": 32
         },
         "UT": {
-            "fillKey": "REP",
+            "fillKey": "Republican",
             "electoralVotes": 32
         },
         "WI": {
-            "fillKey": "DEM",
+            "fillKey": "Democrat",
             "electoralVotes": 32
         },
         "VA": {
-            "fillKey": "LIGHT_DEM",
+            "fillKey": "Light Democrat",
             "electoralVotes": 32
         },
         "VT": {
-            "fillKey": "DEM",
+            "fillKey": "Democrat",
             "electoralVotes": 32
         },
         "WA": {
-            "fillKey": "DEM",
+            "fillKey": "Democrat",
             "electoralVotes": 32
         },
         "WV": {
-            "fillKey": "REP",
+            "fillKey": "Republican",
             "electoralVotes": 32
         },
         "WY": {
-            "fillKey": "REP",
+            "fillKey": "Republican",
             "electoralVotes": 32
         },
         "CA": {
-            "fillKey": "DEM",
+            "fillKey": "Democrat",
             "electoralVotes": 32
         },
         "CT": {
-            "fillKey": "DEM",
+            "fillKey": "Democrat",
             "electoralVotes": 32
         },
         "AK": {
-            "fillKey": "REP",
+            "fillKey": "Republican",
             "electoralVotes": 32
         },
         "AR": {
-            "fillKey": "REP",
+            "fillKey": "Republican",
             "electoralVotes": 32
         },
         "AL": {
-            "fillKey": "REP",
+            "fillKey": "Republican",
             "electoralVotes": 32
         }
 }
-      }).draw();
+      });
+
+      election.key({});
 
     
     </script>
