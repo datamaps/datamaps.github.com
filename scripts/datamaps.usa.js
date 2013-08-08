@@ -40,7 +40,8 @@
     arcConfig: {
       strokeColor: '#DD1C77',
       strokeWidth: 1,
-      animationSpeed: 500
+      arcSharpness: 1,
+      animationSpeed: 600
     }
   };
 
@@ -222,7 +223,6 @@
       throw "Datamaps Error - arcs must be an array";
     }
 
-    console.log(options);
     if ( typeof options === "undefined" ) {
       options = defaultOptions.arcConfig;
     }
@@ -251,7 +251,7 @@
             var originXY = self.latLngToXY(datum.origin.latitude, datum.origin.longitude);
             var destXY = self.latLngToXY(datum.destination.latitude, datum.destination.longitude);
             var midXY = [ (originXY[0] + destXY[0]) / 2, (originXY[1] + destXY[1]) / 2];
-            return "M" + originXY[0] + ',' + originXY[1] + "S" + (midXY[0] + 50) + "," + (midXY[1] - 75) + "," + destXY[0] + "," + destXY[1];
+            return "M" + originXY[0] + ',' + originXY[1] + "S" + (midXY[0] + (50 * options.arcSharpness)) + "," + (midXY[1] - (75 * options.arcSharpness)) + "," + destXY[0] + "," + destXY[1];
         })
         .transition()
           .delay(100)
