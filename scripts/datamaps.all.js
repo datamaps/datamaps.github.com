@@ -22,7 +22,7 @@
         highlightBorderColor: 'rgba(250, 15, 160, 0.2)',
         highlightBorderWidth: 2
     },
-    bubbleConfig: {
+    bubblesConfig: {
         borderWidth: 2,
         borderColor: '#FFFFFF',
         popupOnHover: true,
@@ -36,6 +36,12 @@
         highlightBorderColor: 'rgba(250, 15, 160, 0.2)',
         highlightBorderWidth: 2,
         highlightFillOpacity: 0.85
+    },
+    arcConfig: {
+      strokeColor: '#DD1C77',
+      strokeWidth: 1,
+      arcSharpness: 1,
+      animationSpeed: 600
     }
   };
 
@@ -62,7 +68,7 @@
     else if ( options.scope === 'world' ) {
       projection = d3.geo[options.projection]()
         .scale((element.offsetWidth + 1) / 2 / Math.PI)
-        .translate([element.offsetWidth / 2, element.offsetHeight / 1.8]);
+        .translate([element.offsetWidth / 2, element.offsetHeight / (options.projection === "mercator" ? 1.45 : 1.8)]);
     }
 
     path = d3.geo.path()
@@ -146,12 +152,10 @@
               .style('fill-opacity', options.highlightFillOpacity)
               .attr('data-previousAttributes', JSON.stringify(previousAttributes));
 
-            /* remove the element and place it at the bottom
-                of the parent since the borders will likely be clipped */
-            var parentEl = $this[0][0].parentElement;
-            var el = $this[0][0];
-            $this.remove();
-            parentEl.appendChild(el);
+            //as per discussion on https://github.com/markmarkoh/datamaps/issues/19
+            if ( ! /MSIE/.test(navigator.userAgent) ) {
+             moveToFront.call(this);
+            }
           }
 
           if ( options.popupOnHover ) {
@@ -172,7 +176,10 @@
           d3.selectAll('.datamaps-hoverover').style('display', 'none');
         });
     }
-
+    
+    function moveToFront() {
+      this.parentNode.appendChild(this);
+    }
   }
 
   //plugin to add a simple map legend
@@ -208,6 +215,111 @@
       .attr('class', 'datamaps-legend')
       .html(html);
   }
+
+  function handleArcs (layer, data, options) {
+    var self = this,
+        svg = this.svg;
+
+    if ( !data || (data && !data.slice) ) {
+      throw "Datamaps Error - arcs must be an array";
+    }
+
+    if ( typeof options === "undefined" ) {
+      options = defaultOptions.arcConfig;
+    }
+
+    var arcs = layer.selectAll('path.datamaps-arc').data( data, JSON.stringify );
+
+    arcs
+      .enter()
+        .append('svg:path')
+        .attr('class', 'datamaps-arc')
+        .style('stroke-linecap', 'round')
+        .style('stroke', function(datum) {
+          if ( datum.options && datum.options.strokeColor) {
+            return datum.options.strokeColor;
+          }
+          return  options.strokeColor
+        })
+        .style('fill', 'none')
+        .style('stroke-width', function(datum) {
+          if ( datum.options && datum.options.strokeWidth) {
+            return datum.options.strokeWidth;
+          }
+          return options.strokeWidth;
+        })
+        .attr('d', function(datum) {
+            var originXY = self.latLngToXY(datum.origin.latitude, datum.origin.longitude);
+            var destXY = self.latLngToXY(datum.destination.latitude, datum.destination.longitude);
+            var midXY = [ (originXY[0] + destXY[0]) / 2, (originXY[1] + destXY[1]) / 2];
+            return "M" + originXY[0] + ',' + originXY[1] + "S" + (midXY[0] + (50 * options.arcSharpness)) + "," + (midXY[1] - (75 * options.arcSharpness)) + "," + destXY[0] + "," + destXY[1];
+        })
+        .transition()
+          .delay(100)
+          .style('fill', function() {
+            /*
+              Thank you Jake Archibald, this is awesome.
+              Source: http://jakearchibald.com/2013/animated-line-drawing-svg/
+            */
+            var length = this.getTotalLength();
+            this.style.transition = this.style.WebkitTransition = 'none';
+            this.style.strokeDasharray = length + ' ' + length;
+            this.style.strokeDashoffset = length;
+            this.getBoundingClientRect();
+            this.style.transition = this.style.WebkitTransition = 'stroke-dashoffset ' + options.animationSpeed + 'ms ease-out';
+            this.style.strokeDashoffset = '0';
+            return 'none';
+          })
+
+    arcs.exit()
+      .transition()
+      .style('opacity', 0)
+      .remove();
+  }
+
+  function handleLabels ( layer, options ) {
+    var self = this;
+    options = options || {};
+    var labelStartCoodinates = this.projection([-67.707617, 42.722131]);
+    d3.selectAll(".datamaps-subunit")
+      .attr("data-foo", function(d) {
+        var center = self.path.centroid(d);
+        var xOffset = 7.5, yOffset = 5;
+
+        if ( ["FL", "KY", "MI"].indexOf(d.id) > -1 ) xOffset = -2.5;
+        if ( d.id === "NY" ) xOffset = -1;
+        if ( d.id === "MI" ) yOffset = 18;
+        if ( d.id === "LA" ) xOffset = 13;
+
+        var x,y;
+
+        x = center[0] - xOffset;
+        y = center[1] + yOffset;
+
+        var smallStateIndex = ["VT", "NH", "MA", "RI", "CT", "NJ", "DE", "MD", "DC"].indexOf(d.id);
+        if ( smallStateIndex > -1) {
+          var yStart = labelStartCoodinates[1];
+          x = labelStartCoodinates[0];
+          y = yStart + (smallStateIndex * (2+ (options.fontSize || 12)));
+          layer.append("line")
+            .attr("x1", x - 3)
+            .attr("y1", y - 5)
+            .attr("x2", center[0])
+            .attr("y2", center[1])
+            .style("stroke", options.labelColor || "#000")
+            .style("stroke-width", options.lineWidth || 1)
+        }
+
+        layer.append("text")
+          .attr("x", x)
+          .attr("y", y)
+          .style("font-size", options.fontSize || 10)
+          .style("font-family", options.fontFamily || "Verdana")
+          .style("fill", options.labelColor || "#000")
+          .text( d.id );
+      });
+  }
+
 
   function handleBubbles (layer, data, options ) {
     var self = this,
@@ -314,7 +426,8 @@
     //set options for global use
     this.options = defaults(options, defaultOptions);
     this.options.geographyConfig = defaults(options.geographyConfig, defaultOptions.geographyConfig);
-    this.options.bubbleConfig = defaults(options.bubbleConfig, defaultOptions.bubbleConfig);
+    this.options.bubblesConfig = defaults(options.bubblesConfig, defaultOptions.bubblesConfig);
+    this.options.arcConfig = defaults(options.arcConfig, defaultOptions.arcConfig);
 
     //add the SVG container
     if ( d3.select( this.options.element ).select('svg').length > 0 ) {
@@ -324,6 +437,8 @@
     /* Add core plugins to this instance */
     this.addPlugin('bubbles', handleBubbles);
     this.addPlugin('legend', addLegend);
+    this.addPlugin('arc', handleArcs);
+    this.addPlugin('labels', handleLabels);
 
     //append style block with basic hoverover styles
     if ( ! this.options.disableDefaultStyles ) {
@@ -363,7 +478,7 @@
         drawSubunits.call(self, data);
         handleGeographyConfig.call(self);
 
-        if ( self.options.geographyConfig.popupOnHover || self.options.bubbleConfig.popupOnHover) {
+        if ( self.options.geographyConfig.popupOnHover || self.options.bubblesConfig.popupOnHover) {
           hoverover = d3.select( self.options.element ).append('div')
             .attr('class', 'datamaps-hoverover')
             .style('z-index', 10001)
@@ -429,7 +544,7 @@
           options = undefined;
         }
 
-        options = defaults(options || {}, defaultOptions.bubbleConfig);
+        options = defaults(options || {}, defaultOptions[name + 'Config']);
 
         //add a single layer, reuse the old layer
         if ( !createNewLayer && this.options[name + 'Layer'] ) {
