@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <style>
+          .active { fill: blue !important;}
+        </style>
+    </head>
+    <body>
+  
+        <div id="container1" style="border:1px dotted blue; width: 700px; height: 475px; position: relative;"></div>
+       <script src="http://d3js.org/d3.v3.min.js"></script>
+        <script src="http://d3js.org/topojson.v1.min.js"></script>
+        <script src="http://datamaps.github.io/scripts/datamaps.all.js"></script>
+        <script>
+
+      var election = new Datamap({
+        scope: 'usa',
+        element: document.getElementById('container1'),
+        geographyConfig: {
+          popupOnHover: false
+        }
+      });
+
+      election.labels({"fontSize": 10, labelColor: "#222"});
+      </script>
+    </body>
+</html>
