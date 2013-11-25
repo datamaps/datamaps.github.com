@@ -30,7 +30,7 @@
         .options:after {content: "(Click to toggle code) ↓"; color: #666; float: right; position: absolute; right: 10px; top: 10px; }
         #footer { padding: 10px 0; text-align: center; }
         @media (max-width: 980px) {
-          .heading {font-size: 40px; line-height: 40px; }
+          .heading {font-size: 40px; line-height: 40px; margin-top: 50px; }
           .options { max-height: 45px; }
           .options pre { margin-top: 35px; }
           .options:after { content: "↓"; top: 40px; }
@@ -362,7 +362,7 @@ election.labels();
         </article>
         <article>
           <h3>Bubbles:</h3>
-          <div class="well well-small options"><span>Options:</span> Bubble plugin with custom hoverover template, disabled background map hoverover.</div>
+          <div class="well well-small options"><span>Options:</span> Bubble plugin with custom hoverover template, disabled map hoverover.</div>
           <div class="map" id="bubbles"></div>
           <script data-info="Map source for bubbles example">
 var bubble_map = new Datamap({
@@ -527,11 +527,12 @@ var defaultOptions = {
 <script src="http://yandex.st/highlightjs/7.5/highlight.min.js"></script>
 <script>
   var sections = document.getElementsByClassName('map');
+  var eventName = 'ontouchstart' in document.documentElement ? 'touchstart' : 'click';
   [].forEach.call(sections, function(section) {
     var parent = section.parentNode;
     parent.getElementsByClassName('options')[0].innerHTML += '<pre><code>' + parent.getElementsByTagName('script')[0].innerHTML.replace('<', '&lt;').replace('>', '&gt;') + '</code></pre>';
 
-    parent.getElementsByClassName('options')[0].addEventListener('click', function(evt) {
+    parent.getElementsByClassName('options')[0].addEventListener(eventName, function(evt) {
       if ( evt.currentTarget.classList.contains('open') ) {
         evt.currentTarget.classList.remove('open');
       }
@@ -540,7 +541,7 @@ var defaultOptions = {
       }
     }, false);
 
-    parent.getElementsByTagName('pre')[0].addEventListener('click', function(evt) {
+    parent.getElementsByTagName('pre')[0].addEventListener(eventName, function(evt) {
       evt.stopPropagation();
     }, false);
 
