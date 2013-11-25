@@ -20,11 +20,16 @@
         .head, .examples, .docs { text-align: center; }
         code,pre { text-align: left; }
         .head ul { list-style-type: none;}
-        .map { position: relative; margin: 0 auto;}
+        .map { position: relative; margin: 0 auto; width: 750px; height: 500px;}
         .examples h3 { margin-bottom: 0; }
         .options { position: relative; }
         .options:after {content: "(Inspect element for code)"; color: #666; float: right; position: absolute; right: 10px; }
         #footer { padding: 10px 0; text-align: center; }
+        @media (max-width: 767px) {
+          .heading {font-size: 40px; line-height: 40px; }
+          .options:after { content: "";}
+          .map { width: 100%; height: 300px;}
+        }
       </style>
     </head>
     <body class="tk-source-sans-pro">
@@ -88,7 +93,7 @@
         <article>
           <h3>Basic:</h3>
           <div class="well well-small options"><span>Options:</span> All default options.</div>
-          <div class="map" id="basic" style="width: 750px; height: 500px;"></div>
+          <div class="map" id="basic"></div>
           <script data-info="Map source for basic example">
             (function() {
               var basic = new Datamap({
@@ -100,7 +105,7 @@
         <article>
           <h3>Choropleth:</h3>
           <div class="well well-small options"><span>Options:</span> Mercator projection, custom country fill color data.</div>
-          <div class="map" id="basic_choropleth" style="width: 650px; height: 500px;"></div>
+          <div class="map" id="basic_choropleth"></div>
           <script data-info="Map source for basic choropleth">
             (function() {
               var basic_choropleth = new Datamap({
@@ -125,7 +130,7 @@
         <article>
           <h3>State Labels:</h3>
           <div class="well well-small options"><span>Options:</span> USA projection, state labels plugin (USA map only), custom country fill color data</div>
-          <div class="map" id="map_election" style="width: 650px; height: 500px;"></div>
+          <div class="map" id="map_election"></div>
           <script data-info="Map source for US Election map and labels plugin">
               var election = new Datamap({
                 scope: 'usa',
@@ -356,7 +361,7 @@
         <article>
           <h3>Bubbles:</h3>
           <div class="well well-small options"><span>Options:</span> Bubble plugin with custom hoverover template, disabled background map hoverover.</div>
-          <div class="map" id="bubbles" style="width: 650px; height: 500px;"></div>
+          <div class="map" id="bubbles"></div>
           <script data-info="Map source for bubbles example">
             (function() {
               var bubble_map = new Datamap({
@@ -404,7 +409,7 @@
         <article>
           <h3>Arcs:</h3>
           <div class="well well-small options"><span>Options:</span> USA projection, custom country fill color data, arcs plugin.</div>
-          <div class="map" id="arcs" style="width: 650px; height: 500px;"></div>
+          <div class="map" id="arcs"></div>
           <script data-info="Map source for arcs example">
             (function() {
               var arcs = new Datamap({
