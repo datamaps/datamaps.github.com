@@ -18,16 +18,22 @@
         * { font-family: "source-sans-pro";}
         .heading { font-size: 180px; line-height: 200px;}
         .head, .examples, .docs { text-align: center; }
-        code,pre { text-align: left; }
+        code,pre, pre span { text-align: left; font-family: monospace; font-weight: normal; font-size: medium; }
         .head ul { list-style-type: none;}
         .map { position: relative; margin: 0 auto; width: 750px; height: 500px;}
         .examples h3 { margin-bottom: 0; }
-        .options { position: relative; }
-        .options:after {content: "(Inspect element for code)"; color: #666; float: right; position: absolute; right: 10px; }
+        .options { position: relative; overflow:hidden; max-height: 21px; -webkit-transition: max-height 250ms ease-in; transition: max-height 250ms ease-in; -moz-transition: max-height 250ms ease-in; }
+        .options pre { margin-top: 10px; }
+        .options:hover { background-color: #DDD; cursor: pointer; }
+        .options pre:hover { cursor: default;}
+        .open { max-height: 5000px !important; }
+        .options:after {content: "(Click to toggle code) ↓"; color: #666; float: right; position: absolute; right: 10px; top: 10px; }
         #footer { padding: 10px 0; text-align: center; }
         @media (max-width: 767px) {
           .heading {font-size: 40px; line-height: 40px; }
-          .options:after { content: "";}
+          .options { max-height: 45px; }
+          .options pre { margin-top: 35px; }
+          .options:after { content: ""; }
           .map { width: 100%; height: 300px;}
         }
       </style>
@@ -95,11 +101,9 @@
           <div class="well well-small options"><span>Options:</span> All default options.</div>
           <div class="map" id="basic"></div>
           <script data-info="Map source for basic example">
-            (function() {
               var basic = new Datamap({
                 element: document.getElementById("basic")
               });
-            })();
           </script>
         </article>
         <article>
@@ -107,7 +111,6 @@
           <div class="well well-small options"><span>Options:</span> Mercator projection, custom country fill color data.</div>
           <div class="map" id="basic_choropleth"></div>
           <script data-info="Map source for basic choropleth">
-            (function() {
               var basic_choropleth = new Datamap({
                 element: document.getElementById("basic_choropleth"),
                 projection: 'mercator',
@@ -124,7 +127,6 @@
                   DEU: { fillKey: "authorHasTraveledTo" },
                 }
               });
-            })();
           </script>
         </article>
         <article>
@@ -363,7 +365,6 @@
           <div class="well well-small options"><span>Options:</span> Bubble plugin with custom hoverover template, disabled background map hoverover.</div>
           <div class="map" id="bubbles"></div>
           <script data-info="Map source for bubbles example">
-            (function() {
               var bubble_map = new Datamap({
                 element: document.getElementById("bubbles"),
                 geographyConfig: {
@@ -403,7 +404,6 @@
                   return '<div class="hoverinfo"><strong>Yield:</strong>' + data.yeild + '<br/>Exploded on ' + data.date + ' by the'  + data.country + '</div>'
                 }
               });
-            })();
           </script>
         </article>
         <article>
@@ -411,7 +411,6 @@
           <div class="well well-small options"><span>Options:</span> USA projection, custom country fill color data, arcs plugin.</div>
           <div class="map" id="arcs"></div>
           <script data-info="Map source for arcs example">
-            (function() {
               var arcs = new Datamap({
                 element: document.getElementById("arcs"),
                 scope: 'usa',
@@ -461,7 +460,6 @@
                     }
                 }
               ],  {strokeWidth: 2, arcSharpness: 1.4});
-            })();
           </script>
         </article>
       </section>
@@ -525,9 +523,30 @@ var defaultOptions = {
     </div>
     <a href="https://github.com/markmarkoh/datamaps"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_green_007200.png" alt="Fork me on GitHub"></a>
 
-<link rel="stylesheet" href="http://yandex.st/highlightjs/7.5/styles/default.min.css">
+<link rel="stylesheet" href="http://yandex.st/highlightjs/7.5/styles/github.min.css">
 <script src="http://yandex.st/highlightjs/7.5/highlight.min.js"></script>
+<script>
+  var sections = document.getElementsByClassName('map');
+  [].forEach.call(sections, function(section) {
+    var parent = section.parentNode;
+    parent.getElementsByClassName('options')[0].innerHTML += '<pre><code>' + parent.getElementsByTagName('script')[0].innerHTML.replace('<', '&lt;').replace('>', '&gt;') + '</code></pre>';
 
+    parent.getElementsByClassName('options')[0].addEventListener('click', function(evt) {
+      if ( evt.currentTarget.classList.contains('open') ) {
+        evt.currentTarget.classList.remove('open');
+      }
+      else {
+        evt.currentTarget.classList.add('open');
+      }
+    }, false);
+
+    parent.getElementsByTagName('pre')[0].addEventListener('click', function(evt) {
+      evt.stopPropagation();
+    }, false);
+
+  });
+
+</script>
 <script>hljs.initHighlightingOnLoad();</script>
 <script type="text/javascript">
 
