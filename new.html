@@ -29,11 +29,11 @@
         .open { max-height: 5000px !important; }
         .options:after {content: "(Click to toggle code) ↓"; color: #666; float: right; position: absolute; right: 10px; top: 10px; }
         #footer { padding: 10px 0; text-align: center; }
-        @media (max-width: 767px) {
+        @media (max-width: 980px) {
           .heading {font-size: 40px; line-height: 40px; }
           .options { max-height: 45px; }
           .options pre { margin-top: 35px; }
-          .options:after { content: ""; }
+          .options:after { content: "↓"; top: 40px; }
           .map { width: 100%; height: 300px;}
         }
       </style>
@@ -101,9 +101,9 @@
           <div class="well well-small options"><span>Options:</span> All default options.</div>
           <div class="map" id="basic"></div>
           <script data-info="Map source for basic example">
-              var basic = new Datamap({
-                element: document.getElementById("basic")
-              });
+var basic = new Datamap({
+  element: document.getElementById("basic")
+});
           </script>
         </article>
         <article>
@@ -111,22 +111,22 @@
           <div class="well well-small options"><span>Options:</span> Mercator projection, custom country fill color data.</div>
           <div class="map" id="basic_choropleth"></div>
           <script data-info="Map source for basic choropleth">
-              var basic_choropleth = new Datamap({
-                element: document.getElementById("basic_choropleth"),
-                projection: 'mercator',
-                fills: {
-                  defaultFill: "#ABDDA4",
-                  authorHasTraveledTo: "#fa0fa0"
-                },
-                data: {
-                  USA: { fillKey: "authorHasTraveledTo" },
-                  JPN: { fillKey: "authorHasTraveledTo" },
-                  ITA: { fillKey: "authorHasTraveledTo" },
-                  CRI: { fillKey: "authorHasTraveledTo" },
-                  KOR: { fillKey: "authorHasTraveledTo" },
-                  DEU: { fillKey: "authorHasTraveledTo" },
-                }
-              });
+var basic_choropleth = new Datamap({
+  element: document.getElementById("basic_choropleth"),
+  projection: 'mercator',
+  fills: {
+    defaultFill: "#ABDDA4",
+    authorHasTraveledTo: "#fa0fa0"
+  },
+  data: {
+    USA: { fillKey: "authorHasTraveledTo" },
+    JPN: { fillKey: "authorHasTraveledTo" },
+    ITA: { fillKey: "authorHasTraveledTo" },
+    CRI: { fillKey: "authorHasTraveledTo" },
+    KOR: { fillKey: "authorHasTraveledTo" },
+    DEU: { fillKey: "authorHasTraveledTo" },
+  }
+});
           </script>
         </article>
         <article>
@@ -134,230 +134,230 @@
           <div class="well well-small options"><span>Options:</span> USA projection, state labels plugin (USA map only), custom country fill color data</div>
           <div class="map" id="map_election"></div>
           <script data-info="Map source for US Election map and labels plugin">
-              var election = new Datamap({
-                scope: 'usa',
-                element: document.getElementById('map_election'),
-                geographyConfig: {
-                  highlightBorderColor: '#bada55',
-                 popupTemplate: function(geography, data) {
-                    return '<div class="hoverinfo"><strong>' + geography.properties.name + '</strong> <br />Electoral Votes:' +  data.electoralVotes + ' </div>'
-                  },
-                  highlightBorderWidth: 3
-                },
+var election = new Datamap({
+  scope: 'usa',
+  element: document.getElementById('map_election'),
+  geographyConfig: {
+    highlightBorderColor: '#bada55',
+   popupTemplate: function(geography, data) {
+      return '<div class="hoverinfo"><strong>' + geography.properties.name + '</strong> <br />Electoral Votes:' +  data.electoralVotes + ' </div>'
+    },
+    highlightBorderWidth: 3
+  },
 
-                fills: {
-                'Republican': '#CC4731',
-                'Democrat': '#306596',
-                'Heavy Democrat': '#667FAF',
-                'Light Democrat': '#A9C0DE',
-                'Heavy Republican': '#CA5E5B',
-                'Light Republican': '#EAA9A8',
-                defaultFill: '#EDDC4E'
-              },
-              data:{
-                "AZ": {
-                    "fillKey": "Republican",
-                    "electoralVotes": 5
-                },
-                "CO": {
-                    "fillKey": "Light Democrat",
-                    "electoralVotes": 5
-                },
-                "DE": {
-                    "fillKey": "Democrat",
-                    "electoralVotes": 32
-                },
-                "FL": {
-                    "fillKey": "UNDECIDED",
-                    "electoralVotes": 29
-                },
-                "GA": {
-                    "fillKey": "Republican",
-                    "electoralVotes": 32
-                },
-                "HI": {
-                    "fillKey": "Democrat",
-                    "electoralVotes": 32
-                },
-                "ID": {
-                    "fillKey": "Republican",
-                    "electoralVotes": 32
-                },
-                "IL": {
-                    "fillKey": "Democrat",
-                    "electoralVotes": 32
-                },
-                "IN": {
-                    "fillKey": "Republican",
-                    "electoralVotes": 11
-                },
-                "IA": {
-                    "fillKey": "Light Democrat",
-                    "electoralVotes": 11
-                },
-                "KS": {
-                    "fillKey": "Republican",
-                    "electoralVotes": 32
-                },
-                "KY": {
-                    "fillKey": "Republican",
-                    "electoralVotes": 32
-                },
-                "LA": {
-                    "fillKey": "Republican",
-                    "electoralVotes": 32
-                },
-                "MD": {
-                    "fillKey": "Democrat",
-                    "electoralVotes": 32
-                },
-                "ME": {
-                    "fillKey": "Democrat",
-                    "electoralVotes": 32
-                },
-                "MA": {
-                    "fillKey": "Democrat",
-                    "electoralVotes": 32
-                },
-                "MN": {
-                    "fillKey": "Democrat",
-                    "electoralVotes": 32
-                },
-                "MI": {
-                    "fillKey": "Democrat",
-                    "electoralVotes": 32
-                },
-                "MS": {
-                    "fillKey": "Republican",
-                    "electoralVotes": 32
-                },
-                "MO": {
-                    "fillKey": "Republican",
-                    "electoralVotes": 13
-                },
-                "MT": {
-                    "fillKey": "Republican",
-                    "electoralVotes": 32
-                },
-                "NC": {
-                    "fillKey": "Light Republican",
-                    "electoralVotes": 32
-                },
-                "NE": {
-                    "fillKey": "Republican",
-                    "electoralVotes": 32
-                },
-                "NV": {
-                    "fillKey": "Heavy Democrat",
-                    "electoralVotes": 32
-                },
-                "NH": {
-                    "fillKey": "Light Democrat",
-                    "electoralVotes": 32
-                },
-                "NJ": {
-                    "fillKey": "Democrat",
-                    "electoralVotes": 32
-                },
-                "NY": {
-                    "fillKey": "Democrat",
-                    "electoralVotes": 32
-                },
-                "ND": {
-                    "fillKey": "Republican",
-                    "electoralVotes": 32
-                },
-                "NM": {
-                    "fillKey": "Democrat",
-                    "electoralVotes": 32
-                },
-                "OH": {
-                    "fillKey": "UNDECIDED",
-                    "electoralVotes": 32
-                },
-                "OK": {
-                    "fillKey": "Republican",
-                    "electoralVotes": 32
-                },
-                "OR": {
-                    "fillKey": "Democrat",
-                    "electoralVotes": 32
-                },
-                "PA": {
-                    "fillKey": "Democrat",
-                    "electoralVotes": 32
-                },
-                "RI": {
-                    "fillKey": "Democrat",
-                    "electoralVotes": 32
-                },
-                "SC": {
-                    "fillKey": "Republican",
-                    "electoralVotes": 32
-                },
-                "SD": {
-                    "fillKey": "Republican",
-                    "electoralVotes": 32
-                },
-                "TN": {
-                    "fillKey": "Republican",
-                    "electoralVotes": 32
-                },
-                "TX": {
-                    "fillKey": "Republican",
-                    "electoralVotes": 32
-                },
-                "UT": {
-                    "fillKey": "Republican",
-                    "electoralVotes": 32
-                },
-                "WI": {
-                    "fillKey": "Democrat",
-                    "electoralVotes": 32
-                },
-                "VA": {
-                    "fillKey": "Light Democrat",
-                    "electoralVotes": 32
-                },
-                "VT": {
-                    "fillKey": "Democrat",
-                    "electoralVotes": 32
-                },
-                "WA": {
-                    "fillKey": "Democrat",
-                    "electoralVotes": 32
-                },
-                "WV": {
-                    "fillKey": "Republican",
-                    "electoralVotes": 32
-                },
-                "WY": {
-                    "fillKey": "Republican",
-                    "electoralVotes": 32
-                },
-                "CA": {
-                    "fillKey": "Democrat",
-                    "electoralVotes": 32
-                },
-                "CT": {
-                    "fillKey": "Democrat",
-                    "electoralVotes": 32
-                },
-                "AK": {
-                    "fillKey": "Republican",
-                    "electoralVotes": 32
-                },
-                "AR": {
-                    "fillKey": "Republican",
-                    "electoralVotes": 32
-                },
-                "AL": {
-                    "fillKey": "Republican",
-                    "electoralVotes": 32
-                }
-              }
-              });
-              election.labels();
+  fills: {
+  'Republican': '#CC4731',
+  'Democrat': '#306596',
+  'Heavy Democrat': '#667FAF',
+  'Light Democrat': '#A9C0DE',
+  'Heavy Republican': '#CA5E5B',
+  'Light Republican': '#EAA9A8',
+  defaultFill: '#EDDC4E'
+},
+data:{
+  "AZ": {
+      "fillKey": "Republican",
+      "electoralVotes": 5
+  },
+  "CO": {
+      "fillKey": "Light Democrat",
+      "electoralVotes": 5
+  },
+  "DE": {
+      "fillKey": "Democrat",
+      "electoralVotes": 32
+  },
+  "FL": {
+      "fillKey": "UNDECIDED",
+      "electoralVotes": 29
+  },
+  "GA": {
+      "fillKey": "Republican",
+      "electoralVotes": 32
+  },
+  "HI": {
+      "fillKey": "Democrat",
+      "electoralVotes": 32
+  },
+  "ID": {
+      "fillKey": "Republican",
+      "electoralVotes": 32
+  },
+  "IL": {
+      "fillKey": "Democrat",
+      "electoralVotes": 32
+  },
+  "IN": {
+      "fillKey": "Republican",
+      "electoralVotes": 11
+  },
+  "IA": {
+      "fillKey": "Light Democrat",
+      "electoralVotes": 11
+  },
+  "KS": {
+      "fillKey": "Republican",
+      "electoralVotes": 32
+  },
+  "KY": {
+      "fillKey": "Republican",
+      "electoralVotes": 32
+  },
+  "LA": {
+      "fillKey": "Republican",
+      "electoralVotes": 32
+  },
+  "MD": {
+      "fillKey": "Democrat",
+      "electoralVotes": 32
+  },
+  "ME": {
+      "fillKey": "Democrat",
+      "electoralVotes": 32
+  },
+  "MA": {
+      "fillKey": "Democrat",
+      "electoralVotes": 32
+  },
+  "MN": {
+      "fillKey": "Democrat",
+      "electoralVotes": 32
+  },
+  "MI": {
+      "fillKey": "Democrat",
+      "electoralVotes": 32
+  },
+  "MS": {
+      "fillKey": "Republican",
+      "electoralVotes": 32
+  },
+  "MO": {
+      "fillKey": "Republican",
+      "electoralVotes": 13
+  },
+  "MT": {
+      "fillKey": "Republican",
+      "electoralVotes": 32
+  },
+  "NC": {
+      "fillKey": "Light Republican",
+      "electoralVotes": 32
+  },
+  "NE": {
+      "fillKey": "Republican",
+      "electoralVotes": 32
+  },
+  "NV": {
+      "fillKey": "Heavy Democrat",
+      "electoralVotes": 32
+  },
+  "NH": {
+      "fillKey": "Light Democrat",
+      "electoralVotes": 32
+  },
+  "NJ": {
+      "fillKey": "Democrat",
+      "electoralVotes": 32
+  },
+  "NY": {
+      "fillKey": "Democrat",
+      "electoralVotes": 32
+  },
+  "ND": {
+      "fillKey": "Republican",
+      "electoralVotes": 32
+  },
+  "NM": {
+      "fillKey": "Democrat",
+      "electoralVotes": 32
+  },
+  "OH": {
+      "fillKey": "UNDECIDED",
+      "electoralVotes": 32
+  },
+  "OK": {
+      "fillKey": "Republican",
+      "electoralVotes": 32
+  },
+  "OR": {
+      "fillKey": "Democrat",
+      "electoralVotes": 32
+  },
+  "PA": {
+      "fillKey": "Democrat",
+      "electoralVotes": 32
+  },
+  "RI": {
+      "fillKey": "Democrat",
+      "electoralVotes": 32
+  },
+  "SC": {
+      "fillKey": "Republican",
+      "electoralVotes": 32
+  },
+  "SD": {
+      "fillKey": "Republican",
+      "electoralVotes": 32
+  },
+  "TN": {
+      "fillKey": "Republican",
+      "electoralVotes": 32
+  },
+  "TX": {
+      "fillKey": "Republican",
+      "electoralVotes": 32
+  },
+  "UT": {
+      "fillKey": "Republican",
+      "electoralVotes": 32
+  },
+  "WI": {
+      "fillKey": "Democrat",
+      "electoralVotes": 32
+  },
+  "VA": {
+      "fillKey": "Light Democrat",
+      "electoralVotes": 32
+  },
+  "VT": {
+      "fillKey": "Democrat",
+      "electoralVotes": 32
+  },
+  "WA": {
+      "fillKey": "Democrat",
+      "electoralVotes": 32
+  },
+  "WV": {
+      "fillKey": "Republican",
+      "electoralVotes": 32
+  },
+  "WY": {
+      "fillKey": "Republican",
+      "electoralVotes": 32
+  },
+  "CA": {
+      "fillKey": "Democrat",
+      "electoralVotes": 32
+  },
+  "CT": {
+      "fillKey": "Democrat",
+      "electoralVotes": 32
+  },
+  "AK": {
+      "fillKey": "Republican",
+      "electoralVotes": 32
+  },
+  "AR": {
+      "fillKey": "Republican",
+      "electoralVotes": 32
+  },
+  "AL": {
+      "fillKey": "Republican",
+      "electoralVotes": 32
+  }
+}
+});
+election.labels();
           </script>
         </article>
         <article>
@@ -365,45 +365,45 @@
           <div class="well well-small options"><span>Options:</span> Bubble plugin with custom hoverover template, disabled background map hoverover.</div>
           <div class="map" id="bubbles"></div>
           <script data-info="Map source for bubbles example">
-              var bubble_map = new Datamap({
-                element: document.getElementById("bubbles"),
-                geographyConfig: {
-                  popupOnHover: false,
-                  highlightOnHover: false
-                },
-                fills: {
-                  defaultFill: '#ABDDA4',
-                  USA: 'blue',
-                  RUS: 'red'
-                }
-              });
-              bubble_map.bubbles([
-                {
-                  name: 'Castle Bravo',
-                  radius: 25,
-                  yeild: 15000,
-                  country: 'USA',
-                  significance: 'First dry fusion fuel "staged" thermonuclear weapon; a serious nuclear fallout accident occurred',
-                  fillKey: 'USA',
-                  date: '1954-03-01',
-                  latitude: 11.415,
-                  longitude: 165.1619
-                },{
-                  name: 'Tsar Bomba',
-                  radius: 70,
-                  yeild: 50000,
-                  country: 'USSR',
-                  fillKey: 'RUS',
-                  significance: 'Largest thermonuclear weapon ever tested—scaled down from its initial 100 Mt design by 50%',
-                  date: '1961-10-31',
-                  latitude: 73.482,
-                  longitude: 54.5854
-                }
-              ], {
-                popupTemplate: function(geo, data) {
-                  return '<div class="hoverinfo"><strong>Yield:</strong>' + data.yeild + '<br/>Exploded on ' + data.date + ' by the'  + data.country + '</div>'
-                }
-              });
+var bubble_map = new Datamap({
+  element: document.getElementById("bubbles"),
+  geographyConfig: {
+    popupOnHover: false,
+    highlightOnHover: false
+  },
+  fills: {
+    defaultFill: '#ABDDA4',
+    USA: 'blue',
+    RUS: 'red'
+  }
+});
+bubble_map.bubbles([
+  {
+    name: 'Castle Bravo',
+    radius: 25,
+    yeild: 15000,
+    country: 'USA',
+    significance: 'First dry fusion fuel "staged" thermonuclear weapon; a serious nuclear fallout accident occurred',
+    fillKey: 'USA',
+    date: '1954-03-01',
+    latitude: 11.415,
+    longitude: 165.1619
+  },{
+    name: 'Tsar Bomba',
+    radius: 70,
+    yeild: 50000,
+    country: 'USSR',
+    fillKey: 'RUS',
+    significance: 'Largest thermonuclear weapon ever tested—scaled down from its initial 100 Mt design by 50%',
+    date: '1961-10-31',
+    latitude: 73.482,
+    longitude: 54.5854
+  }
+], {
+  popupTemplate: function(geo, data) {
+    return '<div class="hoverinfo"><strong>Yield:</strong>' + data.yeild + '<br/>Exploded on ' + data.date + ' by the'  + data.country + '</div>'
+  }
+});
           </script>
         </article>
         <article>
@@ -411,55 +411,55 @@
           <div class="well well-small options"><span>Options:</span> USA projection, custom country fill color data, arcs plugin.</div>
           <div class="map" id="arcs"></div>
           <script data-info="Map source for arcs example">
-              var arcs = new Datamap({
-                element: document.getElementById("arcs"),
-                scope: 'usa',
-                fills: {
-                  defaultFill: "#ABDDA4",
-                  win: '#0fa0fa'
-                },
-                data: {
-                  'TX': { fillKey: 'win' },
-                  'FL': { fillKey: 'win' },
-                  'NC': { fillKey: 'win' },
-                  'CA': { fillKey: 'win' },
-                  'NY': { fillKey: 'win' },
-                  'CO': { fillKey: 'win' }
-                }
-              });
+var arcs = new Datamap({
+  element: document.getElementById("arcs"),
+  scope: 'usa',
+  fills: {
+    defaultFill: "#ABDDA4",
+    win: '#0fa0fa'
+  },
+  data: {
+    'TX': { fillKey: 'win' },
+    'FL': { fillKey: 'win' },
+    'NC': { fillKey: 'win' },
+    'CA': { fillKey: 'win' },
+    'NY': { fillKey: 'win' },
+    'CO': { fillKey: 'win' }
+  }
+});
 
-              arcs.arc([
-                {
-                    origin: {
-                        latitude: 40.639722,
-                        longitude: -73.778889
-                    },
-                    destination: {
-                        latitude: 37.618889,
-                        longitude: -122.375
-                    }
-                },
-                {
-                    origin: {
-                        latitude: 30.194444,
-                        longitude: -97.67
-                    },
-                    destination: {
-                        latitude: 25.793333,
-                        longitude: -80.290556
-                    }
-                },
-                {
-                    origin: {
-                        latitude: 39.861667,
-                        longitude: -104.673056
-                    },
-                    destination: {
-                        latitude: 35.877778,
-                        longitude: -78.7875
-                    }
-                }
-              ],  {strokeWidth: 2, arcSharpness: 1.4});
+arcs.arc([
+  {
+      origin: {
+          latitude: 40.639722,
+          longitude: -73.778889
+      },
+      destination: {
+          latitude: 37.618889,
+          longitude: -122.375
+      }
+  },
+  {
+      origin: {
+          latitude: 30.194444,
+          longitude: -97.67
+      },
+      destination: {
+          latitude: 25.793333,
+          longitude: -80.290556
+      }
+  },
+  {
+      origin: {
+          latitude: 39.861667,
+          longitude: -104.673056
+      },
+      destination: {
+          latitude: 35.877778,
+          longitude: -78.7875
+      }
+  }
+],  {strokeWidth: 2, arcSharpness: 1.4});
           </script>
         </article>
       </section>
