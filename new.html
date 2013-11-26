@@ -47,7 +47,7 @@
     <div class="container">
       <section class="head">
         <h1 class="heading">DataMaps</h1>
-        <p class="lead">Customizable map visualizations for the web in a single Javscript file with D3.js</p>
+        <p class="lead">Customizable SVG map visualizations for the web in a single Javscript file using D3.js</p>
         <div class="row">
           <ul class="span4">
               <li>
@@ -518,7 +518,7 @@ var defaultOptions = {
     </div>
     <div id="footer">
       <div class="container">
-          A project by <a target="_blank" href="https://github.com/markmarkoh">Mark DiMarco</a>. Released under the <a target="_blank" href="https://github.com/markmarkoh/datamaps/blob/master/LICENSE">MIT License</a>. Special thanks to <a target="_blank" href="http://d3js.org">d3.js</a>.
+          A project by <a target="_blank" href="https://github.com/markmarkoh">Mark DiMarco</a>. Released under the <a target="_blank" href="https://github.com/markmarkoh/datamaps/blob/master/LICENSE">MIT License</a>. Special thanks to <a target="_blank" href="http://d3js.org">d3.js</a> and my employer <a target="_blank" href="http://keepaustinbazaar.com/">Bazaarvoice</a>.
       </div>
     </div>
     <a href="https://github.com/markmarkoh/datamaps"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_green_007200.png" alt="Fork me on GitHub"></a>
@@ -527,7 +527,8 @@ var defaultOptions = {
 <script src="http://yandex.st/highlightjs/7.5/highlight.min.js"></script>
 <script>
   var sections = document.getElementsByClassName('map');
-  var eventName = 'ontouchstart' in document.documentElement ? 'touchstart' : 'click';
+  var eventName = 'click';
+  
   [].forEach.call(sections, function(section) {
     var parent = section.parentNode;
     parent.getElementsByClassName('options')[0].innerHTML += '<pre><code>' + parent.getElementsByTagName('script')[0].innerHTML.replace('<', '&lt;').replace('>', '&gt;') + '</code></pre>';
