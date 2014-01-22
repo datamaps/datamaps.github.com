@@ -1,1 +1,1 @@
-cp -rp ../datamaps/public/rel/* scripts/
+cp -rp ../datamaps/dist/* scripts/
