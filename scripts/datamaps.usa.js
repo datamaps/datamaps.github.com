@@ -35,7 +35,8 @@
         highlightFillColor: '#FC8D59',
         highlightBorderColor: 'rgba(250, 15, 160, 0.2)',
         highlightBorderWidth: 2,
-        highlightFillOpacity: 0.85
+        highlightFillOpacity: 0.85,
+        exitDelay: 100
     },
     arcConfig: {
       strokeColor: '#DD1C77',
@@ -93,7 +94,7 @@
 
     var subunits = this.svg.select('g.datamaps-subunits');
     if ( subunits.empty() ) {
-      subunits = this.addLayer('datamaps-subunits');
+      subunits = this.addLayer('datamaps-subunits', null, true);
     }
 
     var geoData = topojson.feature( data, data.objects[ this.options.scope ] ).features;
@@ -191,23 +192,25 @@
     }
 
     var html = '<dl>';
+    var label = '';
     if ( data.legendTitle ) {
       html = '<h2>' + data.legendTitle + '</h2>' + html;
     }
     for ( var fillKey in this.options.fills ) {
 
       if ( fillKey === 'defaultFill') {
-        if ( data.defaultFillName ) {
-          html += '<dt>' + data.defaultFillName + ': </dt>';
-        }
-        else {
+        if (! data.defaultFillName ) {
           continue;
         }
+        label = data.defaultFillName;
+      } else {
+        if (data.labels && data.labels[fillKey]) {
+          label = data.labels[fillKey];
+        } else {
+          label= fillKey + ': ';
+        }
       }
-      else {
-        html += '<dt>' + fillKey + ': </dt>';
-      }
-
+      html += '<dt>' + label + '</dt>';
       html += '<dd style="background-color:' +  this.options.fills[fillKey] + '">&nbsp;</dd>';
     }
     html += '</dl>';
@@ -339,10 +342,12 @@
         .append('svg:circle')
         .attr('class', 'datamaps-bubble')
         .attr('cx', function ( datum ) {
-          return self.latLngToXY(datum.latitude, datum.longitude)[0];
+          var latLng = self.latLngToXY(datum.latitude, datum.longitude);
+          if ( latLng ) return latLng[0];
         })
         .attr('cy', function ( datum ) {
-          return self.latLngToXY(datum.latitude, datum.longitude)[1];
+          var latLng = self.latLngToXY(datum.latitude, datum.longitude);
+          if ( latLng ) return latLng[1];
         })
         .attr('r', 0) //for animation purposes
         .attr('data-info', function(d) {
@@ -399,6 +404,7 @@
 
     bubbles.exit()
       .transition()
+        .delay(options.exitDelay)
         .attr("r", 0)
         .remove();
 
@@ -466,7 +472,7 @@
     if ( options.geographyConfig.dataUrl ) {
       d3.json( options.geographyConfig.dataUrl, function(error, results) {
         if ( error ) throw new Error(error);
-
+        self.customTopo = results;
         draw( results );
       });
     }
@@ -507,10 +513,15 @@
   };
 
   //add <g> layer to root SVG
-  Datamap.prototype.addLayer = function( className, id ) {
-    d3.select()
-    return this.svg.append('g')
-      .attr('id', id || '')
+  Datamap.prototype.addLayer = function( className, id, first ) {
+    var layer;
+    if ( first ) {
+      layer = this.svg.insert('g', ':first-child')
+    }
+    else {
+      layer = this.svg.append('g')
+    }
+    return layer.attr('id', id || '')
       .attr('class', className || '');
   };
 
@@ -519,14 +530,23 @@
     for ( var subunit in data ) {
       if ( data.hasOwnProperty(subunit) ) {
         var color;
-        if ( typeof data[subunit] === "string" ) {
-          color = data[subunit];
+        var subunitData = data[subunit]
+        if ( ! subunit ) {
+          continue;
         }
-        else if ( typeof data[subunit].color === "string" ) {
-          color = data[subunit].color;
+        else if ( typeof subunitData === "string" ) {
+          color = subunitData;
+        }
+        else if ( typeof subunitData.color === "string" ) {
+          color = subunitData.color;
         }
         else {
-          color = this.options.fills[ data[subunit].fillKey ];
+          color = this.options.fills[ subunitData.fillKey ];
+        }
+        //if it's an object, overriding the previous data
+        if ( subunitData === Object(subunitData) ) {
+          this.options.data[subunit] = defaults(subunitData, this.options.data[subunit] || {});
+          var geo = this.svg.select('.' + subunit).attr('data-info', JSON.stringify(this.options.data[subunit]));
         }
         svg
           .selectAll('.' + subunit)
