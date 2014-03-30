@@ -1,5 +1,9 @@
 (function() {
   var svg;
+
+  //save off default references
+  var d3 = window.d3, topojson = window.topojson;
+  
   var defaultOptions = {
     scope: 'world',
     setProjection: setProjection,
@@ -35,7 +39,8 @@
         highlightFillColor: '#FC8D59',
         highlightBorderColor: 'rgba(250, 15, 160, 0.2)',
         highlightBorderWidth: 2,
-        highlightFillOpacity: 0.85
+        highlightFillOpacity: 0.85,
+        exitDelay: 100
     },
     arcConfig: {
       strokeColor: '#DD1C77',
@@ -341,10 +346,24 @@
         .append('svg:circle')
         .attr('class', 'datamaps-bubble')
         .attr('cx', function ( datum ) {
-          return self.latLngToXY(datum.latitude, datum.longitude)[0];
+          var latLng;
+          if ( datumHasCoords(datum) ) {
+            latLng = self.latLngToXY(datum.latitude, datum.longitude);
+          }
+          else if ( datum.centered ) {
+            latLng = self.path.centroid(svg.select('path.' + datum.centered).data()[0]);
+          }
+          if ( latLng ) return latLng[0];
         })
         .attr('cy', function ( datum ) {
-          return self.latLngToXY(datum.latitude, datum.longitude)[1];
+          var latLng;
+          if ( datumHasCoords(datum) ) {
+            latLng = self.latLngToXY(datum.latitude, datum.longitude);
+          }
+          else if ( datum.centered ) {
+            latLng = self.path.centroid(svg.select('path.' + datum.centered).data()[0]);
+          }
+          if ( latLng ) return latLng[1];;
         })
         .attr('r', 0) //for animation purposes
         .attr('data-info', function(d) {
@@ -401,8 +420,13 @@
 
     bubbles.exit()
       .transition()
+        .delay(options.exitDelay)
         .attr("r", 0)
         .remove();
+
+    function datumHasCoords (datum) {
+      return typeof datum !== 'undefined' && typeof datum.latitude !== 'undefined' && typeof datum.longitude !== 'undefined';
+    }
 
   }
 
@@ -468,7 +492,7 @@
     if ( options.geographyConfig.dataUrl ) {
       d3.json( options.geographyConfig.dataUrl, function(error, results) {
         if ( error ) throw new Error(error);
-
+        self.customTopo = results;
         draw( results );
       });
     }
@@ -606,7 +630,7 @@
 
   // expose library
   if ( typeof define === "function" && define.amd ) {
-    define( "datamaps", [], function () { return Datamap; } );
+    define( "datamaps", function(require) { d3 = require('d3'); topojson = require('topojson'); return Datamap; } );
   }
   else {
     window.Datamap = window.Datamaps = Datamap;
