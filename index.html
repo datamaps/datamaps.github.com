@@ -130,6 +130,7 @@
       <section class="examples">
         <h2>Changelog</h2>
         <article>
+          <h4><a href="https://github.com/markmarkoh/datamaps/releases/tag/v0.2.7">v0.2.7</a>: Added <code>dataUrl</code> to remote fetch JSON or CSV data </h4>
           <h4><a href="https://github.com/markmarkoh/datamaps/releases/tag/v0.2.6">v0.2.6</a>: AMD fixes, New ISO values for Western Sahara (EHS) and South Sudan (SSD) </h4>
           <h4><a href="https://github.com/markmarkoh/datamaps/releases/tag/v0.2.5">v0.2.5</a>: <code>bubbles</code> now optionally accepts <code>centered</code> instead of <code>latitude/longitude</code> </h4>
           <h4><a href="https://github.com/markmarkoh/datamaps/releases/tag/v0.2.2">v0.2.2</a>: <code>updateChoropleth</code> to update colors after drawing, custom labels for legends</h4>
@@ -594,6 +595,8 @@ var defaultOptions = {
     fills: {
       defaultFill: '#ABDDA4' //the keys in this object map to the "fillKey" of [data] or [bubbles]
     },
+    dataType: 'json', //for use with dataUrl, currently 'json' or 'csv'. CSV should have an `id` column
+    dataUrl: null, //if not null, datamaps will attempt to fetch this based on dataType ( default: json )
     geographyConfig: {
         dataUrl: null, //if not null, datamaps will fetch the map JSON (currently only supports topojson)
         hideAntarctica: true,
