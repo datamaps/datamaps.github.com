@@ -591,6 +591,8 @@ var defaultOptions = {
     scope: 'world', //currently supports 'usa' and 'world', however with custom map data you can specify your own
     setProjection: setProjection, //returns a d3 path and projection functions
     projection: 'equirectangular', //style of projection to be used. try "mercator"
+    height: null, //if not null, datamaps will grab the height of 'element'
+    width: null, //if not null, datamaps will grab the width of 'element'
     done: function() {}, //callback when the map is done drawing
     fills: {
       defaultFill: '#ABDDA4' //the keys in this object map to the "fillKey" of [data] or [bubbles]
