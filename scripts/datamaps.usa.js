@@ -55,7 +55,8 @@
     this.svg = d3.select( element ).append('svg')
       .attr('width', width || element.offsetWidth)
       .attr('class', 'datamap')
-      .attr('height', height || element.offsetHeight);
+      .attr('height', height || element.offsetHeight)
+      .style('overflow', 'hidden'); // IE 10/11 doesn't respect height/width and shows on zoomed in maps
 
     return this.svg;
   }
