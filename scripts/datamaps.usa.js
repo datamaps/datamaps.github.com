@@ -56,7 +56,7 @@
       .attr('width', width || element.offsetWidth)
       .attr('class', 'datamap')
       .attr('height', height || element.offsetHeight)
-      .style('overflow', 'hidden'); // IE 10/11 doesn't respect height/width and shows on zoomed in maps
+      .style('overflow', 'hidden'); // IE10+ doesn't respect height/width when map is zoomed in
 
     return this.svg;
   }
