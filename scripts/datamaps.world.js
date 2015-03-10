@@ -6,6 +6,7 @@
   
   var defaultOptions = {
     scope: 'world',
+    responsive: false,
     setProjection: setProjection,
     projection: 'equirectangular',
     dataType: 'json',
@@ -26,6 +27,9 @@
         highlightFillColor: '#FC8D59',
         highlightBorderColor: 'rgba(250, 15, 160, 0.2)',
         highlightBorderWidth: 2
+    },
+    projectionConfig: {
+      rotation: [97, 0]
     },
     bubblesConfig: {
         borderWidth: 2,
@@ -54,9 +58,17 @@
   function addContainer( element, height, width ) {
     this.svg = d3.select( element ).append('svg')
       .attr('width', width || element.offsetWidth)
+      .attr('data-width', width || element.offsetWidth)
       .attr('class', 'datamap')
       .attr('height', height || element.offsetHeight)
       .style('overflow', 'hidden'); // IE10+ doesn't respect height/width when map is zoomed in
+
+    if (this.options.responsive) {
+      d3.select(this.options.element).style({'position': 'relative', 'padding-bottom': '60%'});
+      d3.select(this.options.element).select('svg').style({'position': 'absolute', 'width': '100%', 'height': '100%'});
+      d3.select(this.options.element).select('svg').select('g').selectAll('path').style('vector-effect', 'non-scaling-stroke');
+    
+    }
 
     return this.svg;
   }
@@ -66,6 +78,8 @@
     var width = options.width || element.offsetWidth;
     var height = options.height || element.offsetHeight;
     var projection, path;
+    var svg = this.svg;
+    
     if ( options && typeof options.scope === 'undefined') {
       options.scope = 'world';
     }
@@ -81,6 +95,23 @@
         .translate([width / 2, height / (options.projection === "mercator" ? 1.45 : 1.8)]);
     }
 
+    if ( options.projection === 'orthographic' ) {
+
+      svg.append("defs").append("path")
+        .datum({type: "Sphere"})
+        .attr("id", "sphere")
+        .attr("d", path);
+
+      svg.append("use")
+          .attr("class", "stroke")
+          .attr("xlink:href", "#sphere");
+
+      svg.append("use")
+          .attr("class", "fill")
+          .attr("xlink:href", "#sphere");
+      projection.scale(250).clipAngle(90).rotate(options.projectionConfig.rotation)
+    }
+
     path = d3.geo.path()
       .projection( projection );
 
@@ -90,7 +121,7 @@
   function addStyleBlock() {
     if ( d3.select('.datamaps-style-block').empty() ) {
       d3.select('head').append('style').attr('class', 'datamaps-style-block')
-      .html('.datamap path {stroke: #FFFFFF; stroke-width: 1px;} .datamaps-legend dt, .datamaps-legend dd { float: left; margin: 0 3px 0 0;} .datamaps-legend dd {width: 20px; margin-right: 6px; border-radius: 3px;} .datamaps-legend {padding-bottom: 20px; z-index: 1001; position: absolute; left: 4px; font-size: 12px; font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;} .datamaps-hoverover {display: none; font-family: "Helvetica Neue", Helvetica, Arial, sans-serif; } .hoverinfo {padding: 4px; border-radius: 1px; background-color: #FFF; box-shadow: 1px 1px 5px #CCC; font-size: 12px; border: 1px solid #CCC; } .hoverinfo hr {border:1px dotted #CCC; }');
+      .html('.datamap path.datamaps-graticule { fill: none; stroke: #777; stroke-width: 0.5px; stroke-opacity: .5; pointer-events: none; } .datamap .labels {pointer-events: none;} .datamap path {stroke: #FFFFFF; stroke-width: 1px;} .datamaps-legend dt, .datamaps-legend dd { float: left; margin: 0 3px 0 0;} .datamaps-legend dd {width: 20px; margin-right: 6px; border-radius: 3px;} .datamaps-legend {padding-bottom: 20px; z-index: 1001; position: absolute; left: 4px; font-size: 12px; font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;} .datamaps-hoverover {display: none; font-family: "Helvetica Neue", Helvetica, Arial, sans-serif; } .hoverinfo {padding: 4px; border-radius: 1px; background-color: #FFF; box-shadow: 1px 1px 5px #CCC; font-size: 12px; border: 1px solid #CCC; } .hoverinfo hr {border:1px dotted #CCC; }');
     }
   }
 
@@ -228,6 +259,14 @@
       .html(html);
   }
 
+    function addGraticule ( layer, options ) {
+      var graticule = d3.geo.graticule();
+      this.svg.insert("path", '.datamaps-subunits')
+        .datum(graticule)
+        .attr("class", "datamaps-graticule")
+        .attr("d", this.path); 
+  }
+
   function handleArcs (layer, data, options) {
     var self = this,
         svg = this.svg;
@@ -241,6 +280,13 @@
     }
 
     var arcs = layer.selectAll('path.datamaps-arc').data( data, JSON.stringify );
+
+    var path = d3.geo.path()
+        .projection(self.projection);
+
+    var arc = d3.geo.greatArc()
+        .source(function(d) { return [d.origin.longitude, d.origin.latitude]; })
+        .target(function(d) { return [d.destination.longitude, d.destination.latitude]; });
 
     arcs
       .enter()
@@ -264,6 +310,9 @@
             var originXY = self.latLngToXY(datum.origin.latitude, datum.origin.longitude);
             var destXY = self.latLngToXY(datum.destination.latitude, datum.destination.longitude);
             var midXY = [ (originXY[0] + destXY[0]) / 2, (originXY[1] + destXY[1]) / 2];
+            if (options.greatArc) {
+              return path(arc(datum))
+            }
             return "M" + originXY[0] + ',' + originXY[1] + "S" + (midXY[0] + (50 * options.arcSharpness)) + "," + (midXY[1] - (75 * options.arcSharpness)) + "," + destXY[0] + "," + destXY[1];
         })
         .transition()
@@ -464,6 +513,7 @@
     //set options for global use
     this.options = defaults(options, defaultOptions);
     this.options.geographyConfig = defaults(options.geographyConfig, defaultOptions.geographyConfig);
+    this.options.projectionConfig = defaults(options.projectionConfig, defaultOptions.projectionConfig);
     this.options.bubblesConfig = defaults(options.bubblesConfig, defaultOptions.bubblesConfig);
     this.options.arcConfig = defaults(options.arcConfig, defaultOptions.arcConfig);
 
@@ -477,6 +527,7 @@
     this.addPlugin('legend', addLegend);
     this.addPlugin('arc', handleArcs);
     this.addPlugin('labels', handleLabels);
+    this.addPlugin('graticule', addGraticule);
 
     //append style block with basic hoverover styles
     if ( ! this.options.disableDefaultStyles ) {
@@ -484,6 +535,21 @@
     }
 
     return this.draw();
+  }
+
+  // resize map
+  Datamap.prototype.resize = function () {
+
+    var self = this;
+    var options = self.options;
+
+    if (options.responsive) {
+      var prefix = '-webkit-transform' in document.body.style ? '-webkit-' : '-moz-transform' in document.body.style ? '-moz-' : '-ms-transform' in document.body.style ? '-ms-' : '',
+          newsize = options.element.clientWidth,
+          oldsize = d3.select( options.element).select('svg').attr('data-width');
+
+      d3.select(options.element).select('svg').selectAll('g').style(prefix + 'transform', 'scale(' + (newsize / oldsize) + ')');
+    }
   }
 
   // actually draw the features(states & countries)
@@ -507,7 +573,7 @@
       });
     }
     else {
-      draw( this[options.scope + 'Topo'] );
+      draw( this[options.scope + 'Topo'] || options.geographyConfig.dataJson);
     }
 
     return this;
@@ -12066,7 +12132,7 @@
     var self = this;
     element.on('mousemove', null);
     element.on('mousemove', function() {
-      var position = d3.mouse(this);
+      var position = d3.mouse(self.options.element);
       d3.select(self.svg[0][0].parentNode).select('.datamaps-hoverover')
         .style('top', ( (position[1] + 30)) + "px")
         .html(function() {
