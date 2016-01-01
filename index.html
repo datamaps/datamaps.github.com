@@ -107,12 +107,13 @@
               <a href="http://jsbin.com/nutawiboci/1/edit">Try it in your browser</a>
             </li>
             <li>
-              <a href="http://datamaps.markmarkoh.com/using-custom-map-data-w-datamaps/">Creating custom map data</a>
-              <sup class="new">New!</sup>
+              <a href="https://web.archive.org/web/20150625160038/http://datamaps.markmarkoh.com/custom-fill-patterns-for-datamaps/">Creating custom map data</a>
             </li>
             <li>
-                <a href="http://datamaps.markmarkoh.com/creating-a-datamaps-plugin/">Creating a plugin</a>
-                <sup class="new">New!</sup>
+                <a href="https://web.archive.org/web/20150625160051/http://datamaps.markmarkoh.com/creating-a-datamaps-plugin/">Creating a plugin</a>
+            </li>
+            <li>
+              <a href="https://web.archive.org/web/20150625160038/http://datamaps.markmarkoh.com/">All Guides</a>
             </li>
           </ul>
           <ul class="offset4 span4">
@@ -134,6 +135,7 @@
       <section class="examples">
         <h2>Changelog</h2>
         <article>
+          <h4><a href="https://github.com/markmarkoh/datamaps/releases/tag/v0.4.3">v0.4.3</a>: Custom state labels, improvements to <code>updateChoropleth</code></h4>
           <h4><a href="https://github.com/markmarkoh/datamaps/releases/tag/v0.4.0">v0.4.0</a>: Allows functions instead of literal values, many bug fixes</h4>
           <h4><a href="https://github.com/markmarkoh/datamaps/releases/tag/v0.2.10">v0.2.10</a>: Allows `height`/`width` as option parameters, fixes IE mouseover issue</h4>
           <h4><a href="https://github.com/markmarkoh/datamaps/releases/tag/v0.2.7">v0.2.7</a>: Added <code>dataUrl</code> to remote fetch JSON or CSV data </h4>
@@ -553,12 +555,12 @@ greatArc: true
         data: {
           'USA': {fillKey: 'lt50' },
           'MEX': {fillKey: 'lt25' },
-          'CAN': {fillKey: 'gt50' },     
+          'CAN': {fillKey: 'gt50' },
           'GTM': {fillKey: 'gt500'},
           'HND': {fillKey: 'eq50' },
           'BLZ': {fillKey: 'pink' },
           'GRL': {fillKey: 'eq0' },
-          'CAN': {fillKey: 'gt50' }       
+          'CAN': {fillKey: 'gt50' }
         }
       });
 
@@ -596,7 +598,7 @@ var zoom = new Datamap({
       .translate([element.offsetWidth / 2, element.offsetHeight / 2]);
     var path = d3.geo.path()
       .projection(projection);
-    
+
     return {path: path, projection: projection};
   },
   fills: {
@@ -708,7 +710,7 @@ var defaultOptions = {
 <script>
   var sections = document.getElementsByClassName('map');
   var eventName = 'click';
-  
+
   [].forEach.call(sections, function(section) {
     var parent = section.parentNode;
     parent.getElementsByClassName('options')[0].innerHTML += '<pre><code>' + parent.getElementsByTagName('script')[0].innerHTML.replace('<', '&lt;').replace('>', '&gt;') + '</code></pre>';
