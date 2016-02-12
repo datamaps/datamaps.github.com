@@ -655,6 +655,7 @@ var defaultOptions = {
     projection: 'equirectangular', //style of projection to be used. try "mercator"
     height: null, //if not null, datamaps will grab the height of 'element'
     width: null, //if not null, datamaps will grab the width of 'element'
+    responsive: false, //if true, call `resize()` on the map object when it should adjust it's size
     done: function() {}, //callback when the map is done drawing
     fills: {
       defaultFill: '#ABDDA4' //the keys in this object map to the "fillKey" of [data] or [bubbles]
@@ -665,6 +666,7 @@ var defaultOptions = {
         dataUrl: null, //if not null, datamaps will fetch the map JSON (currently only supports topojson)
         hideAntarctica: true,
         borderWidth: 1,
+        borderOpacity: 1,
         borderColor: '#FDFDFD',
         popupTemplate: function(geography, data) { //this function should just return a string
           return '&lt;div class="hoverinfo"&gt;&lt;strong&gt;' + geography.properties.name + '&lt;/strong&gt;&lt;/div&gt;';
@@ -673,21 +675,28 @@ var defaultOptions = {
         highlightOnHover: true,
         highlightFillColor: '#FC8D59',
         highlightBorderColor: 'rgba(250, 15, 160, 0.2)',
-        highlightBorderWidth: 2
+        highlightBorderWidth: 2,
+        highlightBorderOpacity: 1
     },
     bubblesConfig: {
         borderWidth: 2,
+        borderOpacity: 1,
         borderColor: '#FFFFFF',
         popupOnHover: true,
+        radius: null,
         popupTemplate: function(geography, data) {
-          return '&lt;div class="hoverinfo"&gt;&lt;strong&gt;' + data.name + '&lt;/strong&gt;&lt;/div&gt;';
+          return '<div class="hoverinfo"><strong>' + data.name + '</strong></div>';
         },
         fillOpacity: 0.75,
+        animate: true,
         highlightOnHover: true,
         highlightFillColor: '#FC8D59',
         highlightBorderColor: 'rgba(250, 15, 160, 0.2)',
         highlightBorderWidth: 2,
-        highlightFillOpacity: 0.85
+        highlightBorderOpacity: 1,
+        highlightFillOpacity: 0.85,
+        exitDelay: 100,
+        key: JSON.stringify
     },
     arcConfig: {
       strokeColor: '#DD1C77',
