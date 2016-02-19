@@ -43,7 +43,7 @@
     <body class="tk-source-sans-pro">
     <script src="/scripts/d3.min.js"></script>
     <script src="/scripts/topojson.js"></script>
-    <script src="/scripts/0.4.4/datamaps.all.js"></script>
+    <script src="/scripts/0.4.5/datamaps.all.js"></script>
     <script type="text/javascript" src="//use.typekit.net/vzv8gnr.js"></script>
     <script type="text/javascript">try{Typekit.load();}catch(e){}</script>
     <div class="container">
@@ -445,6 +445,15 @@ var bubble_map = new Datamap({
 });
 bubble_map.bubbles([
   {
+    name: 'Not a bomb, but centered on Brazil',
+    radius: 23,
+    centered: 'BRA',
+    country: 'USA',
+    yeild: 0,
+    fillKey: 'USA',
+    date: '1954-03-01'
+  },
+  {
     name: 'Castle Bravo',
     radius: 25,
     yeild: 15000,
@@ -467,7 +476,7 @@ bubble_map.bubbles([
   }
 ], {
   popupTemplate: function(geo, data) {
-    return '<div class="hoverinfo"><strong>Yield:</strong>' + data.yeild + '<br/>Exploded on ' + data.date + ' by the'  + data.country + '</div>'
+    return '<div class="hoverinfo"><strong>Yield:</strong>' + data.yeild + '<br/>Exploded on ' + data.date + ' by the '  + data.country + '</div>'
   }
 });
           </script>
@@ -494,7 +503,21 @@ var arcs = new Datamap({
   }
 });
 
+// Arcs coordinates can be specified explicitly with latitude/longtitude,
+// or just the geographic center of the state/country.
 arcs.arc([
+  {
+    origin: 'CA',
+    destination: 'TX'
+  },
+  {
+    origin: 'OR',
+    destination: 'TX'
+  },
+  {
+    origin: 'NY',
+    destination: 'TX'
+  },
   {
       origin: {
           latitude: 40.639722,
@@ -517,7 +540,7 @@ arcs.arc([
       options: {
         strokeWidth: 2,
         strokeColor: 'rgba(100, 10, 200, 0.4)',
-greatArc: true
+        greatArc: true
       }
   },
   {
