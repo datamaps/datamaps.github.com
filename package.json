@@ -1,0 +1,22 @@
+{
+  "name": "datamaps.github.com",
+  "version": "1.0.0",
+  "description": "..",
+  "main": "bombs.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/datamaps/datamaps.github.com.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/datamaps/datamaps.github.com/issues"
+  },
+  "homepage": "https://github.com/datamaps/datamaps.github.com#readme",
+  "dependencies": {
+    "node-fs-extra": "^0.8.1"
+  }
+}

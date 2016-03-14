@@ -43,13 +43,15 @@
     <body class="tk-source-sans-pro">
     <script src="/scripts/d3.min.js"></script>
     <script src="/scripts/topojson.js"></script>
-    <script src="/scripts/0.4.5/datamaps.all.js"></script>
+    <script src="/scripts/0.5.0/datamaps.all.js"></script>
     <script type="text/javascript" src="//use.typekit.net/vzv8gnr.js"></script>
     <script type="text/javascript">try{Typekit.load();}catch(e){}</script>
     <div class="container">
       <section class="head">
         <h1 class="heading">DataMaps</h1>
         <p class="lead">Customizable SVG map visualizations for the web in a single Javascript file using D3.js</p>
+        <p class="lead"><a href="/hi-res.html">Now available in Hi-Resolution formats for large displays!</a></p>
+        <hr />
         <div class="row">
           <ul class="span4">
               <li>
@@ -57,6 +59,10 @@
               </li>
               <li>
                   <a target="_blank" href="https://raw.githubusercontent.com/markmarkoh/datamaps/master/dist/datamaps.world.min.js">World (38KB gzip)</a>
+              </li>
+              <li>
+                  <a target="_blank" href="https://raw.githubusercontent.com/markmarkoh/datamaps/master/dist/datamaps.world.hires.min.js">World Hi-Res (141KB gzip)</a>
+                  <sup class="new">New!</sup>
               </li>
               <li>
                   <a target="_blank" href="https://raw.githubusercontent.com/markmarkoh/datamaps/master/dist/datamaps.usa.min.js">USA only (15KB gzip)</a>
@@ -138,7 +144,7 @@
       <section class="examples">
         <h2>Changelog</h2>
         <article>
-          <h4><a href=""
+          <h4><a href="https://github.com/markmarkoh/datamaps/releases/tag/v0.5.0">v0.5.0</a>: High resolution maps now available</h4>
           <h4><a href="https://github.com/markmarkoh/datamaps/releases/tag/v0.4.4">v0.4.4</a>: <code>updateChoropleth</code> now accepts a reset option parameter</h4>
           <h4><a href="https://github.com/markmarkoh/datamaps/releases/tag/v0.4.0">v0.4.0</a>: Allows functions instead of literal values, many bug fixes</h4>
           <h4><a href="https://github.com/markmarkoh/datamaps/releases/tag/v0.2.10">v0.2.10</a>: Allows `height`/`width` as option parameters, fixes IE mouseover issue</h4>
@@ -736,7 +742,8 @@ var defaultOptions = {
     </div>
     <div id="footer">
       <div class="container">
-          A project by <a target="_blank" href="https://github.com/markmarkoh">Mark DiMarco</a>. Released under the <a target="_blank" href="https://github.com/markmarkoh/datamaps/blob/master/LICENSE">MIT License</a>. Special thanks to <a target="_blank" href="http://d3js.org">d3.js</a> and my employer <a target="_blank" href="http://keepaustinbazaar.com/">Bazaarvoice</a>.
+          A project by <a target="_blank" href="https://github.com/markmarkoh">Mark DiMarco</a>. Released under the <a target="_blank" href="https://github.com/markmarkoh/datamaps/blob/master/LICENSE">MIT License</a>.
+          Special thanks to <a target="_blank" href="http://d3js.org">d3.js</a>, <a target="_blank" href="http://keepaustinbazaar.com/">Bazaarvoice</a>, &amp; my employer <a href="_blank" href="http://data.world">Data.World</a>.
       </div>
     </div>
     <a href="https://github.com/markmarkoh/datamaps"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_green_007200.png" alt="Fork me on GitHub"></a>

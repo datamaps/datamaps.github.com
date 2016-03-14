@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <title>DataMaps</title>
+        <meta name="description" content="A jQuery plugin for geographical map data visualizations using d3.js, SVG.">
+        <meta name="google-site-verification" content="zLCvhju2XBR2bPX9KvLIcnYTcsyjWuEeBda0JfQz7ww" />
+        <meta name="viewport" content="width=device-width">
+
+      <link rel="stylesheet" href="/styles/bootstrap.min.css">
+      <link rel="stylesheet" href="/styles/bootstrap-responsive.min.css">
+      <style>
+        .page-header p { overflow: hidden; }
+        .page-header p a { width: 200px; text-align: center;}
+        .code { height: 500px; overflow: scroll; zoom: .84;}
+        * { font-family: "source-sans-pro";}
+        .heading { font-size: 180px; line-height: 200px;}
+        .head, .examples, .docs { text-align: center; }
+        code,pre, pre span { text-align: left; font-family: monospace; font-weight: normal; font-size: medium; }
+        .head ul { list-style-type: none;}
+        .map { position: relative; margin: 0 auto; width: 750px; height: 500px;}
+        .tall { height: 750px; width: 550px; }
+        .examples h3 { margin-bottom: 0; }
+        .options { position: relative; overflow:hidden; max-height: 21px; -webkit-transition: max-height 250ms ease-in; transition: max-height 250ms ease-in; -moz-transition: max-height 250ms ease-in; }
+        .options pre { margin-top: 10px; }
+        .options:hover { background-color: #DDD; cursor: pointer; }
+        .options pre:hover { cursor: default;}
+        .open { max-height: 5000px !important; }
+        .options:after {content: "(Click to toggle code) ↓"; color: #666; float: right; position: absolute; right: 10px; top: 10px; }
+        #footer { padding: 10px 0; text-align: center; }
+        sup.new { color: red; }
+        @media (max-width: 980px) {
+          .heading {font-size: 40px; line-height: 40px; margin-top: 50px; }
+          .options { max-height: 45px; }
+          .options pre { margin-top: 35px; }
+          .options:after { content: "↓"; top: 40px; }
+          .map { width: 100%; height: 300px;}
+        }
+        .heading a {
+          text-decoration: none;
+          color: #333;
+        }
+      </style>
+    </head>
+    <body class="tk-source-sans-pro">
+    <script src="/scripts/d3.min.js"></script>
+    <script src="/scripts/topojson.js"></script>
+    <script src="/scripts/0.5.0/datamaps.world.hires.js"></script>
+    <script type="text/javascript" src="//use.typekit.net/vzv8gnr.js"></script>
+    <script type="text/javascript">try{Typekit.load();}catch(e){}</script>
+    <div class="container">
+      <section class="head">
+        <h1 class="heading"><a href="/">DataMaps</a></h1>
+        <p class="lead">Customizable SVG map visualizations for the web in a single Javascript file using D3.js</p>
+        <iframe src="http://ghbtns.com/github-btn.html?user=markmarkoh&repo=datamaps&type=watch&count=true" allowtransparency="true" frameborder="0" scrolling="0" width="100px" height="20"></iframe>
+
+        <hr />
+      </section>
+    </div>
+    <div class="container text-center">
+      <div class="row">
+        <div class="offset2 span8">
+          <h1>Announcing DataMaps Hi-Res in 0.5.0</h1>
+          <p>Thanks to work by <a href="https://github.com/magic890">Matteo Guarnerio</a>, DataMaps now provides a higher resolution option,
+            which provides much more details to country borders and islands, at the cost of a higher download size, which is about 129KB gzip'ed.
+          </p>
+          <p>Using the higher resolution version is optional. To use the hi-res version,
+            change the source file you bring into your page to the built hires version, named <code>datamaps.world.hires.min.js</code>:<p>
+          <hr />
+        </div>
+      </div>
+      <div class="row">
+        <div class="span6">
+          <p class="lead text-center">Normal Resolution</p>
+          <p>Smaller file size, great for visualizations embedded into articles.</p>
+          <p>At small enough map sizes, the difference in resolution is less obvious, so stick with standard DataMaps for use cases that call for small maps.</p>
+          <iframe src="./low-res-comparison-frame.html" height="1020" width="100%" style="border: none; padding: 0; margin: 0;"></iframe>
+        </div>
+        <div class="span6">
+          <p class="lead text-center">Hi Resolution</p>
+          <p>Larger file size, great for full-page map visualizations and zooming.</p>
+          <p>If you want higher resolution, you can use the hi-res version to get more details on country borders and islands.<p>
+          <div id="world-map" style="position: relative; height: 350px; width: 500px;"></div>
+          <script>
+            var world = new Datamap({
+              scope: 'world',
+              element: document.getElementById('world-map'),
+              projection: 'mercator',
+              geographyConfig: {
+                borderWidth: 0.5
+              }
+            })
+          </script>
+          <br />
+          <p>Meanwhile when a custom projection is applied to the hi-res Datamap, more detail is visible throughout the map.</p>
+          <div id="hi-res-map" style="position: relative; height: 600px; width: 400px; float: right;"></div>
+          <script>
+            var hires = new Datamap({
+              scope: 'world',
+              element: document.getElementById('hi-res-map'),
+              setProjection: function(element) {
+                var projection = d3.geo.mercator()
+                  .center([7, 45])
+                  .rotate([4.4, 0])
+                  .scale(600)
+                  .translate([element.offsetWidth / 2, element.offsetHeight / 2]);
+                var path = d3.geo.path()
+                  .projection(projection);
+
+                return {path: path, projection: projection};
+              }
+            })
+          </script>
+        </div>
+      </div>
+      <hr />
+    <div id="footer">
+      <div class="container">
+          A project by <a target="_blank" href="https://github.com/markmarkoh">Mark DiMarco</a>. Released under the <a target="_blank" href="https://github.com/markmarkoh/datamaps/blob/master/LICENSE">MIT License</a>.
+          Special thanks to <a target="_blank" href="http://d3js.org">d3.js</a>, <a target="_blank" href="http://keepaustinbazaar.com/">Bazaarvoice</a>, &amp; my employer <a href="_blank" href="http://data.world">Data.World</a>.
+      </div>
+    </div>
+    <a href="https://github.com/markmarkoh/datamaps"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_green_007200.png" alt="Fork me on GitHub"></a>
+
+<link rel="stylesheet" href="http://yandex.st/highlightjs/7.5/styles/github.min.css">
+<script src="http://yandex.st/highlightjs/7.5/highlight.min.js"></script>
+<script>
+  var sections = document.getElementsByClassName('map');
+  var eventName = 'click';
+
+  [].forEach.call(sections, function(section) {
+    var parent = section.parentNode;
+    parent.getElementsByClassName('options')[0].innerHTML += '<pre><code>' + parent.getElementsByTagName('script')[0].innerHTML.replace('<', '&lt;').replace('>', '&gt;') + '</code></pre>';
+
+    parent.getElementsByClassName('options')[0].addEventListener(eventName, function(evt) {
+      if ( evt.currentTarget.classList.contains('open') ) {
+        evt.currentTarget.classList.remove('open');
+      }
+      else {
+        evt.currentTarget.classList.add('open');
+      }
+    }, false);
+
+    parent.getElementsByTagName('pre')[0].addEventListener(eventName, function(evt) {
+      evt.stopPropagation();
+    }, false);
+
+  });
+
+</script>
+<script>hljs.initHighlightingOnLoad();</script>
+<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-36315921-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+    </body>
+</html>
