@@ -49,6 +49,11 @@
     <script src="/scripts/d3.min.js"></script>
     <script src="/scripts/topojson.js"></script>
     <script src="/scripts/0.5.0/datamaps.world.hires.js"></script>
+    <script>
+      window.DatamapHR = window.Datamap;
+      delete window.Datamap;
+    </script>
+    <script src="/scripts/0.5.0/datamaps.world.js"></script>
     <script type="text/javascript" src="//use.typekit.net/vzv8gnr.js"></script>
     <script type="text/javascript">try{Typekit.load();}catch(e){}</script>
     <div class="container">
@@ -77,12 +82,6 @@
           <p class="lead text-center">Normal Resolution</p>
           <p>Smaller file size, great for visualizations embedded into articles.</p>
           <p>At small enough map sizes, the difference in resolution is less obvious, so stick with standard DataMaps for use cases that call for small maps.</p>
-          <iframe src="./low-res-comparison-frame.html" height="1015" width="100%" style="border: none; padding: 0; margin: 0;"></iframe>
-        </div>
-        <div class="span6">
-          <p class="lead text-center">High Resolution</p>
-          <p>Larger file size, great for full-page map visualizations and zooming.</p>
-          <p>If you want higher resolution, you can use the hi-res version to get more details on country borders and islands.<p>
           <div id="world-map" style="position: relative; height: 350px; width: 500px;"></div>
           <script>
             var world = new Datamap({
@@ -95,12 +94,49 @@
             })
           </script>
           <br />
-          <p>Meanwhile when a custom projection is applied to the hi-res Datamap, more detail is visible throughout the map.</p>
-          <div id="hi-res-map" style="position: relative; height: 600px; width: 400px; float: right;"></div>
+          <p>When applying a custom projection to zoom into an area, like Western Europe, the low resolution starts to become more evident.</p>
+          <div id="zoom-map" style="position: relative; height: 600px; width: 400px; float: right;"></div>
           <script>
             var hires = new Datamap({
               scope: 'world',
-              element: document.getElementById('hi-res-map'),
+              element: document.getElementById('zoom-map'),
+              setProjection: function(element) {
+                var projection = d3.geo.mercator()
+                  .center([7, 45])
+                  .rotate([4.4, 0])
+                  .scale(600)
+                  .translate([element.offsetWidth / 2, element.offsetHeight / 2]);
+                var path = d3.geo.path()
+                  .projection(projection);
+
+                return {path: path, projection: projection};
+              }
+            })
+          </script>
+          <!-- <iframe src="./low-res-comparison-frame.html" height="1015" width="100%" style="border: none; padding: 0; margin: 0;"></iframe> -->
+        </div>
+        <div class="span6">
+          <p class="lead text-center">High Resolution</p>
+          <p>Larger file size, great for full-page map visualizations and zooming.</p>
+          <p>If you want higher resolution, you can use the hi-res version to get more details on country borders and islands.<p>
+          <div id="world-map-hr" style="position: relative; height: 350px; width: 500px;"></div>
+          <script>
+            var world = new DatamapHR({
+              scope: 'world',
+              element: document.getElementById('world-map-hr'),
+              projection: 'mercator',
+              geographyConfig: {
+                borderWidth: 0.5
+              }
+            })
+          </script>
+          <br />
+          <p>Meanwhile when a custom projection is applied to the hi-res Datamap, more detail is visible throughout the map.</p>
+          <div id="zoomed-hr" style="position: relative; height: 600px; width: 400px; float: right;"></div>
+          <script>
+            var hires = new DatamapHR({
+              scope: 'world',
+              element: document.getElementById('zoomed-hr'),
               setProjection: function(element) {
                 var projection = d3.geo.mercator()
                   .center([7, 45])
@@ -120,7 +156,7 @@
     <div id="footer">
       <div class="container">
           A project by <a target="_blank" href="https://github.com/markmarkoh">Mark DiMarco</a>. Released under the <a target="_blank" href="https://github.com/markmarkoh/datamaps/blob/master/LICENSE">MIT License</a>.
-          Special thanks to <a target="_blank" href="http://d3js.org">d3.js</a>, <a target="_blank" href="http://keepaustinbazaar.com/">Bazaarvoice</a>, &amp; my employer <a href="_blank" href="http://data.world">Data.World</a>.
+          Special thanks to <a target="_blank" href="http://d3js.org">d3.js</a>, <a target="_blank" href="http://keepaustinbazaar.com/">Bazaarvoice</a>, &amp; my employer <a target="_blank" href="http://data.world">Data.World</a>.
       </div>
     </div>
     <a href="https://github.com/markmarkoh/datamaps"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_green_007200.png" alt="Fork me on GitHub"></a>
