@@ -1,1 +1,1 @@
-cp -rp ../datamaps/dist/* scripts/0.5.4
+cp -rp ../datamaps/dist/* scripts/0.5.6
