@@ -1,1 +1,2 @@
-cp -rp ../datamaps/dist/* scripts/0.5.6
+mkdir -p scripts/0.5.8
+cp -rp ../datamaps/dist/* scripts/0.5.8
